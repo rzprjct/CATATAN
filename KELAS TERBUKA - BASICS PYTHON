@@ -1,0 +1,514 @@
+2.	NUMBERS DAN OPERASI MATEMATIKA
+Garis Besarnya:
+1.	Kita belajar tentang penulisan pengoperasian matematika
+2.	Perintah pembulatan
+3.	Modulus
+4.	Macam-macam penulisan pangkat 
+ 
+•	Di python, dalam operasi matematika, jika pembagian / operasi pada bilangan koma akan otomatis menjadi float (bilangan koma)
+Contoh dalam pengaplikasian program nya:
+ 
+c / a = 10 / 5  = 2.0  pembagian otomatis menjadi float
+a-b = 5 – 5.0  pengoperasian bilangan bulat dengan bilangan float (koma), hasilnya otomatis menjadi float
+a*b = 5*5.0 = 25.0  pengoperasian bilangan bulat dengan bilangan float (koma), hasilnya otomatis menjadi float 
+•	Perintah untuk pembulatan dalam pembagian menggunakan double slash (//) , contohnya seperti di bawah ini  
+3 // 2 seharusnya hasilnya adalah 1.5, tetapi karena dibulatkan, akan menjadi 1
+	Note : pembulatan disini berarti, dia hanya mengambil angka yang ada di depan koma. Berbeda dengan pembulatan yang seperti biasa, pembulatan biasa memperhatikan angka di belakang koma, contohnya 1,6 (karena angka di belakang koma lebih dari 5 maka akan dibulatkan menjadi 2)  
+Sedangkan pembulatan menggunakan “//” di python, itu tidak memperhatikan angka di belakang koma, yang dia ambil hanya angka di depan koma
+•	Modulus (%)
+misalnya hasil pembagian itu 1,blablabl (1, bersisa) sisanya itu bisa memakai modulus (%), contohnya seperti di bawah ini
+ 
+
+5 // 3 hasilnya adalah 1 (karena dibulatkan) lalu sisanya gimana? Kalo ingin mengambil sisanya menggunakan modulus, 5 % 3 = 2 , jadi sisa dari 5 // 3 adalah 2
+CARI TAHU TENTANG MODULUS (%) !!!
+•	Penulisan pangkat dalam python
+Penulisan pangkat dalam python bisa menggunakan pow(angka,pangkatnya) contohnya pow(5,2)  ini berarti 5 pangkat 2
+Atau, kita bisa menggunakan double star (**)
+Contohnya
+5**2  hasilnya adalah 25
+Contoh di dalam program :
+ 
+
+	Jadi, pow(5,2) == 5**2 . jadi dalam pengoperasian bilangan pangkat, anda bisa memilih menggunakan ** atau pow(x,y)
+ 
+3.	STRINGS DAN SLICE THEM UP
+Garis besarnya:
+1.	String = adalah type data karakter
+2.	Penulisan string jika mengandung kata tanda kutip satu (‘)
+3.	Penulisan string jika mengandung kata tanda kutip dua (“)
+4.	Penulisan cara memulai baris baru
+5.	Cara efisien penulisan multi baris (jika string mengandung banyak baris baru “enter yang banyak”)
+6.	cara penulisan direktori dalam string
+7.	cara penulisan efisien kata berulang contohnya "wkwkwkwk", "======", dan lain lain
+8.	cara penggabungan dan penjumlahan dua buah string atau lebih
+9.	Mengakses string - Mengakses karakter / kata, lalu menambahkannya
+
+•	String itu adalah type data karakter, perintah penulisannya adalah:
+Text = ‘data string’
+	Jadi, kita bisa menuliskan sebuah karakter, contohnya seperti di bawah ini:
+ 
+•	Bagaimana jika dalam penulisan teks terdapat kata yang menggunakan tanda kutip? contohnya seperti: jum’at, don’t, doesn’t, it’s
+1.	di dalam pemograman python itu penulisan perintah string itu di depan & di belakang kalimat bisa menggunakan tanda kutip satu (‘) maupun tanda kutip dua (‘’).
+jadi, cara pertama yang digunakan jika di dalam string terdapat kata yang mengandung kutip, kamu bisa menggunakan tanda kutip dua (“) di awal dan akhir kalimat. Penulisan perintah contohnya seperti ini
+			text = “jalan-jalan dihari jum’at” 
+		contoh pengaplikasian dalam pemogramannya :
+ 
+2.	Cara kedua untuk mengatasi penulisan jika sebuah string mengandung tanda kutip adalah dengan menambahkan garis miring terbalik (\) di depan kata string yang mengandung tanda kutip tersebut, contohnya menjadi seperti ini:
+Text2 = ‘jalan-jalan dihari jum\’at’ 
+		Ini contoh dalam pengaplikasian programnya:
+  
+•	Bagaimana jika dalam penulisan string terdapat kata yang mengandung kutip dua? Contohnya seperti penulisan naskah dialog.
+Caranya adalah sama seperti penulisan string jika mengandung tanda kutip satu (‘), contoh pemogramannya:
+1.	Menggunakan kutip satu di depan dan di belakang isi string
+	Text1 = ‘ mahmuy berkata, “kemarin kemana bro?” ‘
+2.	Menggunakan garis miring terbalik (\) 
+Text2 = “hobloh menjawab, \”jalan-jalan bro\” ”
+	Contoh di dalam pemogramannya:
+ 
+
+•	Dalam type data string, kamu bisa menggunakan perintah \n untuk memulai garis baru
+Contoh kalimat:
+	mahmuy berkata, “kemarin kemana bro?”
+	hobloh menjawab, “jalan-jalan bro!”
+contoh penulisan dalam pemograman
+	text = “mahmuy berkata, \“kemarin kemana bro?\” \nhobloh menjawab, \”jalan-jalan bro!\””
+contoh pengaplikasian dalam python:
+ 
+•	Cara efisien penulisan multi baris, jadi kita tidak capek lagi menulis \n jika string mengandung baris yang banyak, caranya adalah 
+1.	menggunakan tanda kutip dua sebanyak tiga kali (“””) di awal dan akhir string
+contoh pemogramannya:
+	text1 = """
+mahmuy : \"kemarin kemana bro?\" 
+hobloh : \"jalan-jalan bro!\"
+mahmuy : "jalan-jalan kemana bro?"
+hobloh : "jalan-jalan ke tasik bro"
+"""
+
+2.	menggunakan tanda kutip satu sebanyak tiga kali (‘’’) di awal dan akhir string
+ text2 = '''
+mahmuy : \"kemarin kemana bro?\" 
+hobloh : \"jalan-jalan bro!\"
+mahmuy : "jalan-jalan kemana bro?"
+hobloh : "jalan-jalan ke tasik bro"
+'''
+
+jadi hasil penerapan dalam pemograman seperti ini:
+ 
+•	Cara penulisan direktori dalam string, adalah dengan menggunakan perintah raw string “r” , cara penulisan dalam pemograman seperti ini:
+text = r'C:\nyoto' # menggunakan perintah raw string (r)
+	kenapa penulisannya seperti itu? Jika kita menulis mentah mentah dengan cara yang biasa, jika penulisan direktori mengandung n di depan dana folder / file (seperti text = C:\nyoto), \n itu akan dianggap menjadi perintah memulai baris baru (enter) 
+contoh salah seperti ini :
+ 
+Maka, contoh yang benar adalah menggunakan raw string, seperti ini:
+ 
+•	Cara penulisan kata berulang dalam string agar tidak capek adalah kita bisa menggunakan operasi matematika digabung dengan string
+1.	Contoh 1 menulis wkwkwkwkwk dengan menggunakan perintah print(10*”wk”)
+ 
+2.	Cara kedua dengan menggabungkan operasi perkalian dengan string menggunakan variabel
+ 
+
+•	Penjumlahan dan penggabungan dua buah string atau lebih
+ 
+
+•	Mengakses karakter / kata per kata, dan menambahkannya
+Cara nya adalah dengan membuat variabelbaru = namavariabelstringnya[“urutan kata yang ingin diambil”]
+
+1.	Contohnya kita akan membuat isi string dengan kata “pisang goreng” Bagaimana cara mengambil kata p dari string pisang goreng? Contoh kode pemogramannya;
+text1 = "pisang goreng"
+a = text1[0] 
+print(a)
+ kenapa kita menulis urutan 0 yang muncul adalah huruf p? bagaimana cara tahu urutan karakter dalam string?
+Kita ambil contoh string “pisang goreng”
+|P|I|S|A|N|G| |G|O|R|E|N|G|
+|  |  | |   | | | | | | | |   |   |
+0  1 2 3   4  5 6 7 8 9 1011 12 13
+Jadi jika kita ingin mengambil karakter g, berarti urutan ada di 5
+Jika kita ingin mengambil karakter e, berarti urutan ada di 10
+2.	Bagaimana  cara mengambil kata, bukan hanya satu huruf?
+Cara nya adalah dengan menggunakan perintah namavariabel = namavariabelstringnya[urutanawal:urutanakhir]
+Contohnya kita akan mengambil kata pisang dari string “pisang goreng”
+ Kode pemogramannya adalah:
+text1 = "pisang goreng"
+a = text1[0:6]
+print(a)
+hasil run adalah: 
+ 
+Kenapa 0 sampai 6 sedangkan kata g dalam pisang ada di urutan ke 5?
+Karena jika kita menggunakan perintah namavariabel = namavariabelstringnya[urutanawal:urutanakhir]
+Urutan awal akan mengambil dari setelah nomor tersebut
+Sedangkan urutan akhir dia akan mengambil urutan dari sebelum nomor tersebut, masih bingung? Coba kita lihat lagi urutannya
+	|P|I|S|A|N|G| |G|O|R|E|N|G|
+|  |  | |   |  |   |  |   |   |  |  |   |   |
+0  1 2 3   4  5   6  7  8   9 10 11 12 13
+		|	            |
+		|		ini urutan akhir yang mau kita ambil
+		Ini urutan awal yang mau kita ambil
+Jadi urutan 0 akan mengambil huruf setelahnya (karena dia urutan awal)
+Dan urutan 6 akan mengambil huruf sebelumnya (karena dia urutan akhir)
+
+3.	Bagaimana cara mengambil huruf dari urutan belakang?
+Jadi ada dua cara dalam mengambil string, yaitu mengambil dari depan (yaitu menggunakan angka positif) dan mengambil dari belakang (yaitu menggunakan angka negatif)
+Contohnya kita ingin mengambil huruf r tetapi mengambil dari belakang
+text1 = "pisang goreng"
+a = text1[-4]
+print(a)
+
+Hasil ketika di run seperti ini :
+ 
+Bagaimana urutannya jika mengambil dari belakang? Kok urutan -4 bisa r yang diambil? Beginilah urutannya
+	|P|I|S|A|N|G| |G|O|R|E|N|G|
+|  |  | |   |  |   |  |   |   |  |  |   |   |
+0  1 2 3   4  5   6  7  8   9 10 11 12 13
+					    |  |   |   |
+					  -4 -3  -2  -1
+	4. Berbagai macam cara lainnya untuk mengakses string
+		- mengambil kata goreng
+			 
+-	Mengambil dan menambah sebuah kata dalam string
+Contohnya: kita akan membuat kalimat ‘pisang ee goreng’
+ 
+ 
+ 
+4.	LISTS
+Lists = Array
+Struktur penulisan pemogramannya adalah menggunakan []
+data = [1,2,3,4,5,6,7,8]
+•	Bagaimana cara mengakses isi list? Cara mengaksesnya seperti mengakses string, dengan menggunakan perintah nama_variabel = namavariabelist[angkaurutan]
+data = [1,2,3,4,5,6,7,8]
+subdata = data[3] # dia akan mengambil urutan data ke 3, yaitu nomor 4
+print(subdata)
+•	Bagaimana cara menambahkan list? Dua list bisa ditambahkan menjadi satu list dengan menggunakan struktur penulisan seperti ini 
+Data3 = data1 + data2
+	Contoh dalam kode pemogramannya seperti ini:
+	 
+Hasil run dari penambahan dua list menjadi seperti ini:
+[1, 2, 3, 4, 5, 6, 7, 8, 100, 200, 300, 400]
+•	Bagaimana cara mengubah data list yang sudah ada? Struktur penulisannya adalah
+namavariabelygingindiubah[nomorurutlistygingindiubah] = angka nya
+
+Contohnya, saya ingin mengubah data ke 4 dari list [1,3,6,8,10,12,14,16]
+ Menjadi 99, penulisannya akan seperti ini:
+data1 = [1,3,6,8,10,12,14,16]
+data1[4] = 99
+print(data1)
+
+dan Hasil run nya menjadi seperti ini :
+ 
+
+	Note!!: dalam merubah isi list harus hati hati!, jika sebuah variabel list yang ingin diubah itu memiliki struktur penulisan data2 = data1
+Contoh kasus nya seperti ini :
+ data1 = [1,3,6,8,10,12,14,16]
+a = data1
+a[4] = 99
+
+print(data1)
+print(a)
+Hasil run nya seperti ini:
+ 
+Kenapa ketika kita merubah data dalam variabel a tetapi data dalam variabel “data1” ikut berubah? Kenapa itu bisa terjadi?
+itu karena perintah a = data1 itu bukan berarti dia mengcopy data dari variabel data1. Tetapi variabel a hanya mengambil referensi list data1 untuk membantu mengakses list tersebut menggunakan nama variabel baru (sharing content).
+Lalu bagaimana cara mengcopy list ke variabel baru? Caranya adalah dengan cara menambah perintah [:] setelah variabel list tersebut. Contoh kode nya seperti ini
+data1 = [1,3,6,8,10,12,14,16]
+a = data1[:]
+a[4] = 99
+untuk membuktikannya, ini merupakan gambar hasil run dari kode tersebut
+ 
+Bisa dilihat, hasil run tersebut membuktikan bahwa variabel a mengcopy seluruh data list di variabel data1, lalu menngganti urutan ke 4 menjadi angka 99
+Dan, cara merubah list bisa juga menggunakan metode slicing seperti ini:
+data1 = [1,3,6,8,10,12,14,16]
+data1[3:5] = [99,99]
+Hasil runnya seperti ini:
+ 
+•	List dalam list (menggabungkan list)
+Menggabungkan list sangat berbeda dengan menambah list. Kalo menambah list tadi menggunakan tanda plus (+), untuk menggabungkan beberapa list menjadi list dalam list menggunakan tanda koma (,). Struktur penulisannya adalah namavariabelbaru = [variabellist1,variabellist2], contoh kasusnya kita ingin menggabungkan data1 dan data2 sehingga menjadi list dalam list, penulisannya seperti ini : 
+data1 = [1,3,6,8,10,12,14,16]
+data2 = [100,200,300,400,500]
+data3 = [data1,data2] # list dalam list (menggabungkan beberapa list menjadi list dalam list)
+print(data3)
+Hasil run nya :
+ 
+Dari gambar di atas membuktikan, hasil run antara menambah list dan menggabungkan list itu berbeda.
+Jika menggunakan cara menambah list, hasil runnya akan seperti ini:
+	[1, 3, 6, 8, 10, 12, 14, 16, 100, 200, 300, 400, 500]
+Tetapi jika menggabungkan list, sehingga menjadi list dalam list, hasil runnya menjadi seperti ini:
+	[[1, 3, 6, 8, 10, 12, 14, 16], [100, 200, 300, 400, 500]]
+•	Bagaimana cara mengakses list dalam list (list dalam multidimensional list)? Cara mengaksesnya dengan menggunakan struktur
+“Nama variabel baru” = “nama variabel list dalam list” [“list yang ke berapa”][“urutan yang ke berapa”]
+	Contoh kasusnya, saya akan mengakses angka 8 dari list dalam list 
+[[1, 3, 6, 8, 10, 12, 14, 16], [100, 200, 300, 400, 500]]
+Penulisan kode nya seperti ini:
+data1 = [1,3,6,8,10,12,14,16]
+data2 = [100,200,300,400,500]
+data3 = [data1,data2] # list dalam list (menggabungkan beberapa list menjadi list dalam list)
+
+x = data3[0][3] # 0 adalah list yang pertama, dan 3 adalah urutan yang menunjukkan angka 8 dalam list yang pertama
+print(data3)
+print(x)
+
+untuk membuktikannya, coba kita run :
+ 
+Dari hasil run di atas menunjukkan bahwa
+0  adalah list yang pertama di list dalam list
+3  menunjukkan urutan ke tiga dari isi dalam list yang pertama (8)
+
+Contoh kasus 2, Kita akan mencoba mengambil angka 300 dari list dalam list 
+[[1, 3, 6, 8, 10, 12, 14, 16], [100, 200, 300, 400, 500]]
+Kita coba jabarkan terlebih dahulu, angka 300 ada di list yang kedua, dan dalam list kedua, angka 300 berada dalam urutan ke 2
+Berarti kita dapat kesimpulan bahwa
+1  adalah menunjuk pada list yang kedua
+2  adalah menunjuk pada urutan angka 300 di dalam list yang kedua
+Jadi, kita coba buat kode pemogramannya menjadi seperti ini :
+data1 = [1,3,6,8,10,12,14,16]
+data2 = [100,200,300,400,500]
+data3 = [data1,data2] # list dalam list (menggabungkan beberapa list menjadi list dalam list)
+
+x = data3[1][2] # 0 adalah list yang kedua, dan 2 adalah urutan yang menunjukkan angka 300 dalam list yang kedua
+	Untuk membuktikan, coba kita run:
+ 
+Dan benar, angka 300 berada di list kedua, dan ada diurutan ke 2 dalam list kedua
+
+
+for
+while
+bedanya for dengan while adalah jika
+for = dia akan tetap melanjutkan looping tanpa kita kasih batasan
+while = dia akan tetap melooping perintah itu itu saja jika kita tidak menambahkan batasan di dalam while itu
+contohnya jika
+angka = 0 
+while angka < 5:
+	print("nilai angka adalah", angka)
+	angka += 1 # ini berarti kita menambahkan batasan untuk menambah satu agar terciptanya angka melebihi 5 dan akhirnya dia stop. jika tidak ditambahkan perintah ini maka dia akan ngeprint angka 0 terus
+
+
+def = fungsi
+
+
+
+
+#14. Scope Global dan Local
+* berguna jika kita ingin merubah atau memproteksi variabel
+* jika kita ingin mengubah atau menambah sebuah isi / nilai variabel lewat sebuah fungsi def, kamu bisa menambahkan perintah global di depan variabel tersebut, ditaruh di dalam def (fungsi)
+
+#15. More on list
+beberapa method yang bisa digunakan untuk memaniulasi list
+A. method untuk menambah
+* append :
+struktur penulisan: namavariabel.append('blablabla')
+menambahkan data baru di belakang isi list
+* extend : 
+struktur penulisan : namavariabel.extend('blablabla')
+menambahkan data baru di belakang list tetapi per karakter / huruf
+* insert : 
+struktur penulisan : namavarabel.insert(urutannya,'blabla')
+menambahkan data baru, tetapi kita bisa menentukan data baru tersebut ingin dimasukkan ke urutan keberapa
+
+B. method untuk menghitung anggota
+* count :
+struktur penulisan : namavariabel.count('sepeda')
+digunakan untuk menghitung jumlah data yang sama, jika dalam list terdapat sepeda ada 2, maka sepeda akan dihitung 2 
+
+c. meremove data
+* remove
+struktur penulisan : namavariabel.remove('sepeda')
+# dia akan menghapus sepeda yang ada di dalam list
+digunakan untuk menghapus salah satu isi data
+
+d. membalikkan data
+* reverse :
+struktur penulisan : namavariabel.reverse()
+dia akan membalikkan isi data, yang tadi nya di depan menjadi di belakang / yg tadinya di belakang menjadi di depan 
+
+e. mengcopy data ke variabel baru
+* copy :
+struktur penulisan --> namavariabelbaru = namavariabellist.copy()
+
+dan masih ada banyak lagi
+- list.sort
+- list.index(x[, start[, end]])
+- list.clear()
+- list.pop([i])
+
+#16. Stacks and queues
+ini berhubungan dengan penumpukan data / antrian
+* stacks = menumpuk
+analoginya seperti buku, data yang diambil pasti yang paling atas (yg baru dimasukkan)
+struktur penulisan : namavariabel.pop()
+* queues = antrian
+analoginya seperti antrian di restaurant, data yang sudah antri lama / data baru akan diambil terlebih dahulu,
+menggunakan library collections dan mengimpor fungsi deque
+struktur penulisan : 
+	from collections import deque
+	antrian = deque([1,2,3,4,5])
+	antrian.popleft() # mengurangi yang paling depan
+
+#17. tuples
+* struktur data ada = list, tuples, set, dictionary
+* cara tahu apa itu jenis type datanya adalah dengan menggunakan perintah type, cara penulisannya : print(type(namavariabel))
+* tuple menggunakan dengan ()
+* struktur penulisan : namavariabel = (1,2,3,4,5)
+* tuples tidak bisa diubah seperti type data lists
+* cara tahu apa saja yang bisa dilakukan dengan jenis type data tersebut adalah dengan menggunakan perintah dir, cara penulisannya adalah : print(dir(namavariabel))
+* cara mengetahui posisi urutan sebuah isi type data (0,1,2,3,..) adalah dengan menggunakan perintah index, cara penulisannya adalah: print(namavariabel.index(angkaygadadilist))
+* jadi apa fungsi tuples? tuples tidak bisa dirubah nilainya (fix) jadi tuples ini berguna kalo misalnya kita punya sebuah data yang tidak boleh dirubah, contohnya data ktp, data member, id, dsb...
+* kenapa? karena tuples lebih ringan untuk diproses dibandingkan list 
+* bagaimana cara membuktikannya? pake import sys dan import timeit untuk mengetahui besarnya memori dan kecepatan eksekusi kode
+* cara tahu besarnya memori dari sebuah type data adalah dengan menggunakan import library sys, struktur penulisan perintahnya adalah : namavariabel = sys.getsizeof(namavariabeltypedatanya)
+print(namavariabel
+* cara tahu / mengecek cepat nya sebuah kode diproses adalah menggunakan import timeit, struktur penulisan perintahnya adalah : 
+namavariabel = timeit.timeit(stmt=namavariabeltypedata,number=1000000)
+
+#18. TYPE DATA SET
+* Set itu karakteristik nya seperti himpunan, karakteristiknya :
+	1. dia tidak memiliki urutan
+	2. tidak memperhatikan jumlah dari isi yang sama, contohnya jika isi data set dari superhero terdapat gundala-nya ada dua, tetap dihitung satu 
+	3. jika dari 2 type data set ada isi data yang sama jika digabungkan dia dianggapnya satu (irisan)
+ 
+* ada 2 cara penulisan type data set
+  1. cara pertama dengan menggunakan struktur penulisan
+	namavariabel = {isi data nya}
+  2. cara kedua dengan menggunakan struktur penulisan
+	namavariabel = set()
+	namavariabel.add('isi datanya') 
+* cara mengurutkan type data set berdasarkan abjad adalah, dengan menambahkan perintah sorted. Struktur penulisannya adalah :
+	print(sorted(namavariabel))
+* tidak bisa di index, tidak bisa diambil data nya karena tidak support index, tidak ada urutan
+* GABUNGAN - sesuai dengan karakteristik himpunan, type data set support gabungan antar banyak variabel. cara penulisannya adalah dengan menambahkan perintah union setelah nama variabel. struktur penulisannya adalah :
+	print(namavariabeldata.union(namavariabeldatakedua))
+* IRISAN - sesuai dengan karakteristik himpunan, type data set support irisan antar banyak variabel. cara penulisannya adalah dengan menambahkan perintah intersection. struktur penulisannya adalah :
+	print(namavariabeldata.intersection(namavariabeldatakedua))
+
+#19. TYPE DATA DICTIONARY
+* apa itu dictionary? dictionary adalah sebuah struktur data asosiatif / menggunakan mapping (pemetaan) contoh struktur penulisan : 
+	namavariabel = {keyword:value,keyword:value,...}
+contoh kasus dalam membuat data member
+	member1 = {"ID":101,"NAMA":"MUHAMMAD REZA","STATUS":"VIP"}
+* metode pengambilan data terbagi banyak cara:
+- metode pengambilan secara keseluruhan dengan hanya memanggil nama variabel nya. contoh pemogramannya adalah:
+	print(member1)
+  atau bisa dengan menggunakan perintah items setelah nama variabelnya, contoh pemogramannya adalah:
+	print(member1.items())
+- metode pengambilan datanya dengan menggunakan key nya. contoh pemograman dari di atas :
+	print(member1["NAMA"] <-- nanti keluar value dari key nya
+- dalam dictionary ini kita bisa melihat semua keys yang ada di dalam isi dictionary tersebut, caranya adalah :
+	print(member1.keys())
+- atau kita juga bisa mengambil hanya value (nilai) nya, caranya adalah :
+	print(member1.values())
+* kita juga bisa membuat daftar dari seluruh kumpulan dictionary digabungkan menjadi 1 dictionary dengan struktur perintah :
+	variabeldic1 = {keyvar1:valuevar1}
+	variabeldic2 = {keyvar2:valuevar2}
+	namavariabel = {keys:variabeldic1,keys:variabeldic2}
+lalu kita bisa memanggilnya, dengan struktur kode 
+	print(namavariabel[keys])
+
+#20. TYPE DATA PADA LOOPING
+* enumerate -> untuk membuat looping angka otomatis, struktur pemogramannya adalah
+	for index1,index2 in enumerate(nama variabel list)
+		print(index,":",band)
+* zip -> adalah menggabungkan dua buah type data list & tuples dalam looping (for) sesuai dengan urutannya. struktur penulisannya contoh menggabungkan antara nama band dengan lagu nya :
+	for namaband,lagu in zip(nama_band,kumpulan_lagu):
+		print(namaband,'-',lagu)
+
+CARA DIATAS BERLAKU UNTUK TYPE DATA LIST DAN TUPLES
+
+* melooping type data set lalu diurutkan sesuai dengan urutan abjad
+perintahnya adalah :
+	for i in sorted(namavariabelset):
+		print(i)
+* melooping type data dictionary, ada beberapa variasi looping pada type data dictionary, yaitu :
+- melooping berdasarkan keys nya, contoh struktur kode nya adalah :
+	for i in namavariabeldic.keys():
+		print(i)
+
+- melooping berdasarkan value nya
+	for i in namavariabeldic.values():
+		print(i)
+
+- melooping keseluruhan (dengan cara menambahkan dua iterables)
+	for i,v in namavariabeldic.items()
+		print(i,"menyanyikan lagu berjudul",v)
+
+#21 IMPORT
+* import berguna misalnya kita ingin menggunakan multifile
+* beberapa cara penulisan import modul adalah :
+- cara sederhana : import namafile
+- cara untuk mengganti : import namafile as namabaru
+- cara 3 : kita bisa mengimport hanya spesifik fungsinya, contoh prgoramnya adalah :
+	from namafile import fungsinya
+	fungsinya() # ini cara memanggilnya
+- cara 4 : kita bisa mengimport semua spesifik fungsinya, tetapi nanti dalam memanggil tidak diperlukan menulis nama filenya. struktur penulisannya adalah :
+	from namafile import *
+	namafungsi() # jadi langung menulis namafungsinya
+- car 5 : kita bisa mengganti namafungsi nya ketika di import, dengan cara penulisan pemogramannya :
+	from namafile import namafungsi as namabaru
+	namabaru() # jadi namafungsi telah ganti menjadi namabaru 
+* cara memanggil variabel / memanggil def (fungsi) dari file yang di import adalah dengan cara menuliskan struktur : namafile.namavariabel
+
+#22 MEMBUAT MODUL
+* modul = program dalam satu file disebut modul
+
+#23 MEMBUAT PACKAGE
+* package = kumpulan dari modul modul
+* cara pertama, memanggil modul modul package adalah dengan perintah 
+	from namafolder import namafilemodul
+* cara kedua, untuk menyatukan modul modul adalah dengan membuat __init__ di folder yang sama dengan modul. lalu di dalamnya memasukkan perintah :
+	from .namafilemodul1 # dot/titik (.) berarti folder modul tersebut
+
+lalu dalam file utamanya tinggal memasukkan perintah : import namafolder
+
+#24 Menggunakan __main__
+* __main__ berguna saat kita memakai modul modul dari luar
+* contohnya jika kita menggunakan perintah print(__name__) pada file modul, dan ketika kita mengimport fungsi dari modul tersebut ke file pemograman utama dia akan menunjukkan (mengeprint) nama dari modul tersebut, yang artinya perintah __name__ akan memberi tahu kita dari file mana fungsi tersebut diambil.
+* lalu ketika __name__ di run / eksekusi di file yang sama (tidak di import) dia akan muncul __main__ yang berarti itu masih di file yang sama
+* cara pemanfaatan __main__ ini berguna jika kita ingin sebuah fungsi / class hanya ingin dijalankan di file utama, dan tidak ingin sebuah fungsi / class dijalankan jika di file berbeda
+cara nya adalah dengan menggunakan metode if :
+	if __name__ == '__main__':
+		matematika()
+perintah diatas berarti jika di run di file yang sama maka fungsi matematika() dijalankan. jika fungsi matematika() dijalankan dengan metode di import maka matematika() tidak akan dijalankan
+
+#25 class
+* penjelasan tentang class, jika suatu objek (instance) memiliki kelakuan, dan atribut yang sama maka menggunakan class (objek oriented programming). jadi kita membuat template.
+
+
+* method adalah fungsi yang nempel (ada) pada class
+
+#28. PRIVATE VARIABLE
+* variabel yang hanya bisa dirubah di dalam class, program diluar tidak bisa merubah. penulisannya dengan menambahkan __ di depan variabel tersebut
+	__namavariabel = 5
+* dalam pengaksesan di method menggunakan perintah 
+	self.__namavariabel += input_nilai
+
+#29. VARIABEL CLASS
+* variabel yang ada di dalam class, cara mengaksesnya dengan menggunakan perintah
+	namaclass.namavariabelclass += 1
+* cara di atas tidak bisa digunakan jika variabel class nya di private
+
+#30. INHERITANCE (Turunan)
+* Class selalu diawali dengan huruf besar (sebagai penanda bahwa itu class)
+* inheritance digunakan untuk mencegah perulangan penulisan kode yang methodnya sama (aturan programming itu DRY - sebisa mungkin jangan mengulang penulisan) cara penulisannya adalah 
+	class Namaclass(Namaclassutama):
+
+#31. INPUT DAN OUTPUT FILE
+* penulisan kode pemogramannya adalah dengan menggunakan perintah:
+	namavariabel = open("nama.txt"",'mode')
+	namavariabel.write("ini adalah data text yang dibuat dengan menggunakan python)
+	namavariabel.close() # fitur ini semacam file kita buka, kalo sudah beres kita tutup, kalo misalnya tidak ada perintah ini file akan terbuka terus, dia bisa jadi tidak ke save / ngegantung
+
+* nah, ada berbagai macam mode :
+- w = write mode / mode menulis dan menghapus file lama dan menulis yang baru, jika file tidak ada, dia maka akan membuat file baru. penulisannya :
+	namavariabel = open("namafile.txt",'w')
+- r = read mode only / hanya bisa membaca saja. penulisannya :
+	namavariabel = open("namafile.txt,'r')
+	print(namavariabel.read())
+- a = appending mode / menambahkan data di akhir baris. penulisannya :
+	
+- r+ = write & read mode
+
+#35 TRY & EXCEPTION - Menangkap Error / error handling
+* try & exception digunakan untuk menangkap error
+* ketika error biasanya program yang di run akan berhenti secara otomatis. gimana maksud dari menangkap error ?
+* contoh kasusnya, jika kita membuat program masukkan angka, tetapi pengguna memasukkan huruf program akan error dan berhenti otomatis, jadi disini try & error berfungsi untuk menangkap error tersebut yaitu jika pengguna memasukkan huruf maka program tidak langsung berhenti tetapi menangkap lalu memunculkan perintah "anda tidak memasukkan angka, coba lagi. silahkan masukkan angka"
+* menggunakan perintah :
+	try:
+		{kode perintahnya}
+	except typeerrornya :
+
