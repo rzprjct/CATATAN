@@ -1,0 +1,105 @@
+#04 PYTHON OOP - METHOD
+* Method terbagi menjadi 3:
+- method tanpa argumen, tanpa return, contoh programnya adalah:
+  class Hero:
+	def siapa(self):
+		print("saya adalah",self.name)
+- method dengan argumen, contoh programnya adalah:
+  class Hero:
+	def Healthup(self,inputhealth):
+		self.health += inputhealth
+- method dengan return (return artinya mengembalikan nilai), contoh  programnya adalah :
+  class Hero:
+	def getHealth(self):
+		return self.Health
+cara memanggil returnya adalah dengan cara memanggil nama methodnya : hero1.getHealth()
+
+#08 python OOP - Encapsulasi pada objek OOP 
+* encapsulasi menggunakan getter & setter
+* getter = mengambil variabel (dengan perintah return)
+* setter = mensetting variabel
+* syaratnya buat semua variabel objek (inheritance) menjadi private
+* fungsinya untuk menjaga agar sebuah variabel tidak mudah dirubah dari luar
+
+#09 python OOP - Encapsulasi pada class OOP - Static Method & Class  Method
+* ada berbagai cara mengakses variabel class private menggunakan return dengan method :
+1.	def namamethod(self):
+		return Hero.__variabelprivpadaclass
+karena disana terdapat self yang artinya method itu hanya berlaku pada objek (inheritance), 
+yang berarti cara penulisan dalam mengakses variabel class private nya adalah :
+	print(namaobjek.namamethod())
+
+2.	def getJumlah():
+		return Hero.__variabelprivpadaclass
+karena kita telah menghilangkan self disana, berarti itu hanya berlaku pada class, tidak pada objek (inheritance),
+yang berarti cara penulisan dalam mengakses variabel class private nya adalah:
+	print(namaclass.namamethod())
+
+3. Bisa ga kita ngambil variabel private class yang berlaku di kedua duanya (di objek & di class) gimana caranya? caranya adalah dengan decorator static method, cara penulisannya :
+	@staticmethod
+	def getJumlah():
+		return Hero.__variabelprivpadaclass
+jadi karena memakai decorator @staticmethod dia akan menempel pada objek dan ke class nya.
+
+
+4. Bagaimana cara ke-3 agar lebih dinamis? caranya adalah dengan menambahkan decorator class method lalu ditambahkan dengan argumennya, cara penulisannya adalah:
+	@classmethod
+	def getJumlah(argumen):
+		return argumen.__variabelprivpadaclass
+dari contoh diatas, argumen akan dianggap polymorph system, dianggap objek bisa, dianggap class juga bisa
+
+#10 BELAJAR OOP - GETTER & SETTER / DECORATOR @property
+* penulisan print pada variabel :
+	variabel = "name: {} \n\t health: {}".format(name,health)
+* di python ada juga decorator property cara penulisannya adalah : @property. ini fungsinya adalah merubah method menjadi seperti variabel dalam ngesummonnya.
+keunggulannya :
+1. misalnya memakai decorator property, cara mengambil methodnya adalah tanpa (). jadi : 
+	print(namaclass.namamethod)
+2. jadi decorator property kita bisa berubah method menjadi seperti variabel, dan isi variabelnya dia akan berubah secara realtime
+
+* nah, untuk membuat getter dan setter dalam OOP, maka method yang diinginkan dibuah terlebih dahulu menjadi property, lalu kosongkan dengan perintah pass contohnya :
+	@property
+	def armor(self):
+		pass
+* lalu kita bisa membuat getter nya (getter adalah mengambil private variabel) dengan decorator getter, cara penulisannya adalah
+	@armor.getter
+	def armor(self):
+		return self.__armor
+* lalu kita buat setter nya (setter adalah untuk mensetting private variabel)
+	@armor.setter
+	def armor(self,inputarmor):
+		self.__armor = inputarmor
+* dengan menggunakan getter & setter, kita bisa mengambil & mensetting dengan nama method yang sama, jadi ini menjadi lebih mudah & simpel dari sisi client side. 
+contoh dari di atas, kita akan mengambil nilai armor :
+	print(namaobjek.armor)
+lalu kita ingin merubah nilai armor nya kita tinggal menulis :
+	namaobjek.armor = 90
+bisa dilihat dari diatas, pengambilan nilai armor menjadi lebih simpel, hanya tinggal menuliskan seperti di atas, tanpa adanya () karena sudah dianggap seperti variabel dengan menambahkan @property. 
+dan juga pengubahan nilai dari variabel menjadi lebih mudah, hanya tinggal menuliskan namaobjek.namamethod = nilaiberubah, tanpa harus menggunakan method yang berbeda, dan penulisannya sama dengan variabel karena sudah dianggap seperti variabel oleh @property
+
+* dan ada juga decorator deleter, contohnya seperti ini
+	@armor.deleter
+	def armor(self):
+		self.__armor = None
+* dan cara penggunaaannya dari sisi client side adalah dengan menuliskan perintah :
+	del namaobjek.armor
+
+#13 OOP PYTHON Super() - INHERITANCE ISI METHOD (Menurunkan isi dari sebuah method)
+* kita bisa menurunkan isi dari sebuah method ke class lain dengan menggunakan perintah :
+	namaclass.namamethod(self)
+* cara di atas sangatlah kurang dinamis, karena kita harus menuliskan namaclass dan self disana, cara yang lebih mudah adalah dengan menggunakan perintah super(), contohnya adalah
+	super().namamethod()
+
+#20 PYTHON OOP ABSTRACT CLASS 
+* abstract class instance nya adalah class
+* abstract class akan mencegah suatu method agar salah satu method tersebut tidak bisa dipakai di sub-Class lalu jika ingin memakainya, kita dipaksa untuk menulis ulang class tersebut di sub-class
+* nah abstract class pada method ini sangat berfungsi juga sebagai peringatan, misalnya abstract class nya adalah tombol dan abstract methodnya adalah nama, misalnya kita membuat sub class tombol radiobutton menginheritance abstract class tombol, maka abstract class method akan memperingatkan dan memaksa kita untuk mengimplementasikan method name pada tombol radiobutton tersebut pada subclass radiobutton
+* abstract class ini juga berfungsi jika kita ingin membuat abstract class tidak bisa di buat instance nya
+* cara membuat abtsract class harus mengimport abc dengan perintah
+	from abc import ABC,abstractmethod
+lalu class yang ingin dijadikan abstract class harus menginheritance dari ABC, contoh perintahnya adalah
+	class Button(ABC):
+* lalu jika kita ingin salah satu method tidak bisa dipakai di sub class caranya adalah dengan menambahkan decorator @abstractmethod . contoh perintahnya adalah seperti ini :
+	@abstractclassmethod
+	def click(self):
+dari contoh di atas, kita mencegah method click untuk tidak dipakai  di sub class yang menginheritance abstract class tersebut. jika ingin memakai abstract method itu kita dipaksakan untuk mengimplementasikan ulang method tersebut
