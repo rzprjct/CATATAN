@@ -1,0 +1,1371 @@
+A. SQL and Script Documentation
+#1 Basic SQL for Data Science
+Fokus utama:
+1. Apa itu SQL?
+2. Kenapa SQL penting?
+3. Bagaimana cara menggunakan SQL?
+
+* Database (basis data) - kumpulan informasi yang disimpan secara sistematik di dalam sistem komputer
+* Bagaimana cara mengakses data dari dalam database?
+* Query - merupakan request / permintaan akan informasi yang tersimpan di dalam database
+* Jadi, query merupakan sarana kita untuk mengatakan (request) kondisi - kondisi apa yang kita inginkan dari data yang ingin kita ambil dalam database
+* salah satu bahasa query yang umum digunakan dalam data scientist adalah SQL
+* SQL digunakan untuk mengambil data dari database yang bertipe RDBMS
+* RDBMS - Relational Database Management System
+* SQL digunakan untuk memanipulasi data dalam database, seperti:
+CRUD
+1. Create (Menambah) 
+2. Read (Membaca)
+3. Update (Mengubah)
+4. Delete (Menghpus)
+
+* data dalam RDBMS disimpan dalam bentuk tabel
+* table memiliki nama, dalam contoh adalah: products
+ - konvensional yang berlaku dan sering dipakai dalam penulisan nama tabel biasanya ditulis huruf kecil semua
+ - dan spasi biasa diganti dengan garis bawah (_)
+* table memiliki field (nama kolom), contohnya product_id, name, category, price, stocks
+* satu baris horizontal disebut row / record 
+* satu baris vertikal disebut column
+
+#2 Syntax pada SQL - Select, From, Where, Limit
+1. Syntax dasar SQL yang dipakai untuk membaca database
+2. bagaimana cara menuliskan kriteria tertentu dalam SQL
+
+* mengambil semua tabel data dari SQL bisa menggunakan syntax SELECT :
+	SELECT * FROM products 
+* misalnya kita ingin mengambil secara spesifik hanya 3 row, kita bisa menggunakan syntax LIMIT :
+	SELECT * FROM products LIMIT 3
+* misalnya kita ingin mengambil salah satu field saja. Nah dari syntax di atas, bintang (*) berarti itu adalah perintah mengambil seluruh field, jadi jika kita ingin mengambil beberapa field saja * bisa diganti dengan nama field nya, contoh saya ingin mengambil hanya field name dan category :
+	SELECT name, category FROM products LIMIT 3
+* bagaimana cara tahu ada category apa saja di dalam sebuah table database? jika hanya menggunakan perintah sederhana seperti:
+	SELECT category FROM products
+maka category yang sama akan muncul beberapa kali. jika kita hanya ingin melihat category yang berbeda saja (category yang sama menjadi irisan / di anggap 1 category) maka menggunakan syntax :
+	SELECT DISTINCT category FROM products
+* bagaimana cara memunculkan semua row yang category nya sama? cara nya adalah dengan menggunakan syntax WHERE, contoh kasus saya ingin memunculkan semua row yang memiliki category-nya handphone, maka syntaxnya adalah :
+	SELECT
+		* # ini artinya memunculkan semua field
+	FROM products	# dari tabel products
+	WHERE	# untuk memunculkan field yg diinginkan
+		category = 'Handphone' # nama field yg diinginkan menjadi filter
+
+Macam macam penggunaan syntax WHERE
+- bagaimana jika kita tidak ingin salah satu field yang berisi 'sesuatu' tidak ingin dimunculkan? caranya seperti di atas tetapi dengan mengganti perintah menjadi !=
+contoh kasus, saya tidak ingin field category yang mengandung "Handphone" dimunculkan
+	SELECT
+		*
+	FROM products
+	WHERE
+		category != 'Handphone'
+
+- bagaimana jika kita ingin memunculkan row yang memenuhi syarat tertentu, contoh kasus: saya ingin memunculkan row yang isi field stock nya lebih dari 3, perintahnya adalah
+	SELECT
+		*
+	FROM products
+	WHERE
+		stock > 3
+
+- bagaimana jika kita ingin memunculkan row yang mengandung salah dua atau lebih dari field. contoh kasus saya ingin memunculkan row yang mengandung category Handphone dan Computer, syntax nya adalah dengan menggunakan namafield IN ('isidarifield1','isidarifield2'), contohnya:
+	SELECT
+		*
+	FROM products
+	WHERE
+		category IN ('Handphone','Computer')
+
+- bagaimana memunculkan row yang mengandung isi dari field yang nama depan yang sama tetapi belakangnya punya kata apapun? kita bisa menggunakan syntax namafield LIKE 'isifield%'. contoh kasus, saya ingin memunculkan row yang memiliki field name yang berisi 'Laptop' tetapi berbeda merk, bisa menggunakan syntax :
+	SELECT
+		*
+	FROM products
+	WHERE
+		name LIKE 'Laptop%' 
+# tanda persen (%) berarti kata Laptop boleh diikuti oleh kata apapun
+
+* Operator Logika pada SQL - Operator AND dan OR
+untuk menggabungkan dua karakteristik atau lebih di dalam WHERE
+contoh kasus, saya ingin memunculkan semua produk yang kategorinya handphone dan stock nya lebih dari 5. kita akan menggunakan syntax AND :
+	SELECT
+		*
+	FROM products
+	WHERE
+		category = "Handphone"
+		AND stock > 5
+nah jika kita ingin memunculkan semua produk yang kategorinya handphone ATAU stocknya lebih dari 5, kita akan menggunakan syntax OR :
+	SELECT
+		*
+	FROM products
+	WHERE
+		category = "Handphone"
+		OR stock > 5
+
+* OPERATOR LOGIKA PADA SQL - NOT
+* contoh kasus, jika kita ingin memunculkan semua kategory handphone tetapi tidak boleh yang stock nya di bawah 5, kita bisa menggunakan syntax NOT :
+	SELECT
+		*
+	FROM products
+	WHERE
+		category = 'Handphone'
+		NOT stock < 5
+
+* SYNTAX COMMENT PADA SQL
+penulisan comment pada SQL bisa menggunakan syntax -- text comment nya
+contoh :
+	-- Mengambil Semua Row kategory TV
+	SELECT
+		*
+	FROM products
+	WHERE
+		category = "TV"
+
+#3 Data Summarization and Aggregation by using SQL
+1. Order BY
+2. Count
+3. Min
+4. Max
+5. Sum Average
+6. Group BY
+* Syntax Order BY digunakan untuk mengurutkan data berdasarkan suatu nilai dalam field, contoh kasus saya ingin mengurutkan product berdasarkan stock penulisan syntaxnya adalah:
+	SELECT * FROM products 
+	ORDER BY stock ASC
+- ASC disana berarti - mengurutkan dari yang terkecil ke terbesar / dari huruf awal hingga huruf akhir
+- DESC - sebaliknya, dia akan mengurutkan dari yang terbesar hingga terkecil / huruf akhir hingga huruf awal
+* Syntax Count - digunakan untuk menghitung baris atau data yang sesuai dengan kondisi, contoh kasus, saya ingin menghitung berapa banyak product yang saya miliki, contoh syntax nya adalah:
+	SELECT
+		COUNT(*)
+	FROM products
+macam macam variasi syntax count:
+- saya ingin menghitung berapa banyak data yang ada di salah satu field, contoh kasusnya saya ingin menghitung berapa banyak data yang ada di field name:
+	SELECT
+		COUNT(name)
+	FROM products
+- bagaimana cara jika saya ingin menghitung berapa banyak isi field dengan menghiraukan isi yang sama (irisan)? Caranya adalah dengan menggabungkan dengan syntax DISTINCT contoh kasusnya saya ingin menghitung berapa banyak category yang ada di table products, contoh syntax nya adalah :
+	SELECT
+		COUNT(DISTINCT category)
+	FROM products
+DISTINCT diatas memberi perintah jika ada dua atau lebih dengan isi yang sama maka dihitung satu (dalam kasus ini adalah jika ada isi kategory yang sama)
+* MIN - digunakan untuk mencari nilai minimum dalam suatu kolom
+* MAX - digunakan untuk mencari nilai maksimum dalam suatu kolom
+* SUM - digunakan untuk menjumlahkan semua nilai dalam suatu kolom
+* AVG - digunakan untuk mencari nilai rata rata nya
+contoh kasusnya saya ingin mencari nilai MIN,MAX, SUM,dan AVG dari field stock, penulisan syntaxnya adalah:
+	SELECT
+		MIN(stock),
+		MAX(stock),
+		SUM(stock),
+		AVG(stock),
+	FROM products
+* di SQL, kamu bisa mengganti nama kolom dari suatu perintah syntax dengan menggunakan syntax AS, contoh dari kode SQL di atas :
+	SELECT
+		MIN(stock) AS min_stock,
+		MAX(stock) AS max_stock,
+		SUM(stock) AS total_stock,
+		AVG(stock) AS avg_stock
+	FROM products
+contoh diatas, setiap syntax yg diubah dibatasi dengan koma (,)
+
+* function di atas tadi memperlihatkan keseluruhan dari table products, sekarang bagaimana jika kita ingin mengelompokkan berdasarkan field tertentu? caranya adalah dengan menggunakan syntax GROUP BY.
+contoh kasus adalah kita ingin mengelompokkan berdasarkan jumlah product di masing masing category :
+	SELECT
+		category,
+		COUNT(*) as jumlah_product
+	FROM products
+	GROUP BY category
+contoh kasus 2, jika kita ingin mengelompokkan berdasarkan jumlah product dan jumlah stock di masing masing category:
+	SELECT
+		category,
+		COUNT(*) AS jumlah_product,
+		SUM(stock) AS total_stock,
+	FROM products
+	GROUP BY category
+contoh kasus 3, kita akan menggabungkan kondisi di atas lalu di tambahkan dengan menghitung rata rata di setiap category
+	SELECT
+		category,
+		Count(*) AS jumlah_product,
+		SUM(stock) AS total_stock,
+		AVG(price) AS avg_price
+	FROM products
+	GROUP BY category
+
+* syntax CASE - kondisional
+biasanya syntax case diakhiri dengan perintah END, contoh kasusnya misal kita ingin mengelompokkan berdasarkan harga, yaitu sangat mahal, mahal, dan murah :
+	SELECT
+		*,
+		CASE
+			WHEN price > 10000000 THEN 'sangat mahal'
+			WHEN price > 5000000 THEN 'mahal'
+			ELSE 'murah'
+		END AS price_type
+	FROM products
+- lalu kita ingin menghitung jumlah produk dan total stock dalam kelompok 'sangat mahal, mahal, murah' dengan syntax GROUP BY, contoh penulisannya adalah
+	SELECT
+		CASE
+			WHEN price > 10000000 THEN 'sangat mahal'
+			WHEN price > 5000000 THEN 'MAHAL'
+			ELSE 'MURAH'
+		END AS price_type,
+			COUNT(*) AS jumlah_product
+			SUM(stock) AS total_stock
+	FROM products
+	GROUP BY price_type
+- lalu kita ingin mengelompokkan 'sangat mahal, mahal, murah' berdasarkan category, dengan menambahkan category di depan price_type pada syntax GROUP BY dan di atas CASE :
+	SELECT
+		category,
+		CASE
+			WHEN price > 10000000 THEN 'SANGAT MAHAL'
+			WHEN price > 5000000 THEN 'MAHAL'
+			ELSE 'MURAH'
+		END AS price_type,
+			COUNT(*) AS jumlah_product,
+			SUM(stock) AS total_stock
+	FROM products
+	GROUP BY category,price_type
+
+#4 How to Merge the Data by Using SQL
+1. Syntax Union
+2. Syntax Join
+* selama ini hanya fokus dengan 1 table, sekarang kita akan menggabungkan beberapa table menggunakan syntax Union.
+* Syntax Union - digunakan untuk menggabungkan isi dari beberapa tabel
+- perlu diketahui, syntax UNION jika diantara dua tables ini memiliki baris yang sama, maka akan dianggap satu
+- jika ingin menggabungkan isi dari beberapa tables tanpa memedulikan baris yang sama maka bisa menambahkan ALL setelah UNION
+- syntax Union jika kedua tables field (kolom) nya berbeda maka dia akan terjadi error, maka harus memilih sendiri field field yang sama
+	SELECT
+		product_id,
+		name,
+		category
+	FROM products
+	UNION
+	SELECT
+		product_id,
+		name,
+		category
+	FROM virtual_products
+- menggabungkan dan menambahkan field baru bisa menggunakan syntax AS yang sama :
+	SELECT
+		product_id,
+		'products' AS product_type,
+		name,
+		category
+	FROM products
+	UNION
+	SELECT
+		product_id,
+		'virtual_products' AS product_type,
+		name,
+		category
+	FROM virtual_products
+
+* Syntax Join - digunakan untuk menghubungkan kolom kolom dari tabel
+1. contoh kasus, kita memiliki table products dan tabel transactions, tabel di transactions tidak memiliki nama_product maka kita harus cek di tabel products
+	SELECT *
+	FROM transactions t
+	JOIN products p ON t.product_id = p.product_id 
+	AND t.product_type = 'products' 
+- t & p disana adalah alias, agar nanti jika dipanggil tidak terlalu panjang
+- ON adalah syntax yang digunakan untuk menghubungkan field (kolom) yang sama di tabel products dan tabel transactions
+- AND disana menambahkan syarat bahwa product_type nya harus product, karena kita menghubungkan antara products dan transactions
+
+2. misal dari tabel di atas, kita hanya ingin memunculkan product name saja dari tabel product, kita bisa menggunakan perintah :
+	SELECT
+		t.*,
+		p.name AS product_name
+	FROM transaction t
+	JOIN products p ON t.product_id = p.product_id AND t.product_type = 'products'
+
+3. jika menambahkan syntax LEFT sebelum JOIN, maka isi tabel transactions yang tidak terlibat dengan tabel products tetapi dia ada di isi tabel transaction akan tetap dimunculkan, tetapi NULL karena dia tidak ada hubungan dengan tabel products
+
+#5 HOW TO DO DATA MODIFICATION BY USING SQL
+CRUD
+- Create
+- Read
+- Update 
+- Delete
+* Create - Membuat data, ada dua cara membuat data, yaitu menggunakan query dan import CSV
+1. Query, ada beberapa mode dalam membuat data lewat query
+Type Field :
+- Text : untuk type text
+- Integer : untuk bilangan bulat
+- Real : untuk bilangan yang memiliki koma
+Mode Field :
+- NN (Not Null) - kolom tidak boleh kosong
+- PK (Primary Key) - Penunjuk identitas dari tabel, contohnya: product_id
+- AI (Auto Increment) - dimana setiap kita menambahkan data baru, maka isi kolom otomatis bertambah
+- U (Uniq) - berarti isi kolom ini harus unik, tidak boleh ada yang sama
+
+Bagaimana cara menambahkan data baru? maka bisa menggunakan query 	INSERT INTO namatable
+	VALUES(11,'HP K','Handphone',5000000,7)
+Value bisa langsung di-isi dengan nilai nilai, tetapi harus sesuai urutan dengan field nya
+
+Bagaimana cara menambah data baru tetapi hanya field field tertentu saja? maka bisa menggunakan syntax diatas, tetapi ditambahkan field field tertentunya, contoh:
+	INSERT INTO namatable
+	(name,category,price)
+	VALUES('HP L','Handphone',1000000)
+* Update - Mengubah data
+bisa menggunakan query UPDATE namatables, contoh syntax nya adalah
+	UPDATE products
+	SET stock = 4 # ini untuk menentukan field apa yang ingin diubah
+	WHERE product_id=11 # ini menunjukkan baris keberapa yang mau di update
+contoh kasus 2, jika ingin mengubah category TV menjadi Television
+	UPDATE products
+	SET category = 'Television'
+	WHERE category='TV'
+contoh kasus 3, kita ingin mengubah stock yang NULL menjadi angka 0
+	UPDATE products
+	SET stock = 0
+	WHERE stock IS NULL
+
+* Delete - Menghapus data
+contoh kasus kita ingin menghapus data yang memenuhi syarat tertentu, contohnya kita ingin menghapus data yang stock nya 0
+	DELETE FROM products
+	WHERE stock = 0
+contoh kasus 2, kita ingin menghapus data yang tabel nya mengandung category Computer
+	DELETE FROM products
+	WHERE category = 'Computer'
+jika kita ingin mempertahankan computer yang harganya di atas 10juta maka bisa menambahkan syntax AND :
+	DELETE FROM products
+	WHERE category = 'Computer' AND price > 10000000
+* CARA MENGHAPUS TABLE, menghapus seluruh isi table bisa menggunakan query DROP,
+contoh kasus saya ingin menghapus tabel products :
+	DROP TABLE products
+
+#6 GITHUB: Script Documentation and Collaboration
+* github - menyelesaikan masalah kolaborasi
+
+
+
+===================================================
+B. INTRODUCTION TO R LANGUAGE 
+
+* R adalah sebuah bahasa pemograman dan environment yang biasa digunakan untuk statistical computing dan graphics
+* pemrograman R spesifik digunakan untuk berbagai keperluan data analytics
+- Eksplorasi data
+- Visualisasi data
+- Automation
+- Machine Learning
+* R menggunakan kurung kurawal {} dalam penulisan source code
+* Fitur pemanfaatan R dalam pengolahan data :
+ - Pengambilan data
+ - Eksplorasi data
+	- Data Filtering
+	- Data arrangement
+	- Data transformation
+	- Data summarization
+- Visualisasi data: Plot, Chart, Grafik
+- Data Modeling - kita bisa mengembangkan suatu model machine learning menggunakan data yang dimiliki: Klasifikasi, Regresi, Clustering
+
+#2 How to Download and Install R Studio
+* Syntax untuk menginstall library adalah :
+	install.packages("nama packages")
+* Syntax untuk menguninstall library adalah :
+	remove.packages("nama packages")
+
+#3 Basic Function and Data Type in R Language
+* Pembuatan sebuah variabel (Assignment) ada dua cara, yang pertama menggunakan sama dengan (=) yang kedua menggunakan tanda panah (<-)
+	a = 10
+	b <- "Hello World!"
+* Data type
+1. Integer & Decimals
+ - angka bilangan bulat (1,2,3,4,5) dinamakan integers
+ - angka bilangan koma (1.3,2.3,..) dinamakan decimals
+beberapa operasi aritmatik pada bilangna integer & decimal :
+ - pangkat menggunakan perintah : 5^2
+2. Strings
+data yang berupa tulisan / huruf, string ditandakan dengan isi data yang diapit dengan tanda kutip ("),
+jika sebuah angka diapit dengan tanda kutip maka angka tersebut akan dianggap tulisan (data strings) dan tidak dapat menggunakan operasi aritmatik.
+operasi - operasi yang bisa digunakan untuk data string adalah :
+- Menggabungkan data string, dalam menggabungkan data string, penulisannya menggunakan function paste, contoh saya ingin menggabungkan antara kata "saya" dan "reza" :
+	paste("Saya","Reza") 
+ada juga function paste0 yang digunakan untuk menggabungkan string, tetapi tidak ada spasi di dalamnya
+	paste0("Saya","Reza")
+
+3. Variabel
+- Penulisan sebuah variabel tidak boleh diawali dengan angka, karena akan terjadi error
+
+4. Boolean / Logical
+tipe data yang nilainya berisi TRUE / FALSE untuk menyatakan benar atau salah. Contoh kasus, kita akan membandingkan sebuah hasil aritmatik dan operasi nya
+	1+5 == 6 # tanda sama dengan 2 ini berarti membandingkan
+jika benar, maka akan bertuliskan TRUE
+	1+4 > 6
+apakah 1+4 lebih besar dari 6? jika tidak akan bertuliskan FALSE
+
+5. Special Values
+- NA : yang berarti Not Available
+- NULL : yang berarti Himpunan Kosong 
+- inf : yang berarti infinity (nilai tak hingga)
+	10/0 # hasilnya infinity
+	100-Inf # hasilnya infinity
+- NaN : Not a Number, yang berarti bukan sesuatu bilangan yang tidak terdefinisi
+	0/0 # hasilnya tidak terdefinisi
+	Inf-Inf # hasilnya NaN
+	
+ 
+#4 Conditional, Looping, and Create Function in R.
+# Conditional (Percabangan)
+Biasanya digunakan untuk memeriksa suatu kondisi. Jika kondisi nilainya Benar, maka perintah di bawahnya akan dijalankan, tetapi ketika salah akan dilewati dan akan diperiksa perintah selanjutnya.
+Function yang digunakan untuk percabangan / conditional adalah :
+- IF, ELSE IF, ELSE
+penulisan syntax if adalah
+	if(kondisinya apa){
+		...perintahnya apa...
+	}
+contoh kasus saya akan membuat pengecekan apakah nilai variabel a = 10, jika iya maka akan memunculkan "variabel ini berisi angka 10"
+	a = 10
+	if(a==10){
+		print("variabel ini berisi angka 10")
+	}else{
+		print("ini bukana angka 10")
+	}
+dari kode di atas kita bisa lihat, tidak sama seperti python, bahasa R dalam menggunakan else harus satu baris dengan akhir dari if (kurung kurawal if)
+
+- penulisan if beruntun (else if). Contoh kasus, saya ingin membuat pengecekan apakan nilai a = 10, (if) jika iya maka akan memunculkan "variabel ini berisi angka 10" jika bukan, dia akan melakukan pengecekan yang kedua (else if), yaitu pengecekan apakah nilai a bernilai positif (a >= 10) jika iya, maka dia akan memunculkan "a adalah angka positif. Bagaimana jika a bernilai negatif? (else) kita akan memunculkan "a adalah angka negatif"
+	a = 7
+	if(a==10){
+		print("angka bernilai 10")
+	} else if(a >= 0){
+		print("angka bernilai positif")
+	} else{
+		print("angka bernilai negatif")
+	}
+
+# Operasi Looping (Perulangan)
+biasa digunakan untuk mengulang sesuatu berdasarkan suatu kondisi
+ada 2 jenis looping, yaitu While & For:
+1. While
+contoh penulisan syntax while adalah :
+	while(..kondisi..){
+		... perintah jika kondisi benar ...
+		...perintah agar while ini memenuhi kondisi FALSE..
+	}
+while akan berulang ulang dan perintah dilakukan selama isi dari while BENAR (TRUE), dan setelah SALAH (FALSE) maka looping akan berhenti
+contoh programnya adalah :
+	i = 1
+	while(i < 10){
+		print("halo")
+		i = i+1
+	}
+
+2. For
+* for lebih ringkas, biasa digunakan untuk suatu vektor, 
+* vektor adalah sederetan nilai yang memiliki data type yang sama
+* contoh penulisan syntax for :
+	for(...kondisi...){
+		... perintah jika kondisi benar...
+	}
+* Penulisan vektor yang berisi string :
+	namavariabel = c("Adi","Reza","Hudi","Dedi")
+
+* Contoh kasus, kita akan melakukan looping bersama dengan vektor. kasusnya, saya ingin memunculkan halo nama menggunakan syntax for, tetapi nama mengambil dari vector sebuah variabel
+	# kita buat terlebih dahulu vector nya
+	names = c("Adi","Hudi","Reza","Dedi")
+	# lalu kita buat looping
+	for(i in names){
+		print(paste("Halo",i))
+	}
+
+syntax paste di atas menunjukkan bahwa itu adalah penggabungan antara dua string, yang satu string halo, dan satunya string yg dimasukkan ke dalam variabel
+
+# Bagaimana Cara membuat Function
+* Function biasa digunakan untuk memproses suatu input dan mengeluarkan suatu output
+* Penulisan function sama seperti penulisan variabel, hanya saja menggunakan syntax function. 
+	nama_variabel = function(input_argumen){
+		... isi perintah ...
+	}
+contoh kasus, menghintung luas lingkaran :
+	luas_lingkaran = function(input_r){
+		pi = 3.14
+		luas = pi*input_r^2
+		return(luas) # return artinya mengembalikan nilai
+	}
+
+penulisan saat ingin menggunakan function adalah :
+	luas_lingkaran(10) # jika r = 10
+
+#5 Data Structur & Frame Introduction in R Language
+* Data structure vector 
+	names = c("Reza","Adi","Luffy","Brook")
+index di bahasa pemograman R adalah dimulai dari 1
+jadi jika kita ingin mengambil Reza : names[1]
+jika kita ingin mengambil Reza s.d Luffy : names[1:3]
+* Data Structure Factor
+mirip seperti vector, ditambah informasi mengenai distinct value
+(nilai nilai unik di dalam factor tersebut), data structur factor ini menggunakan syntax factor(), contohnya saya ingin mengubah vector names di atas menjadi sebuah factor :
+	factor(names)
+contoh kasus kita akan membuat, factor jenis kelamin :
+	factor(c("male","female","female","male","male"))
+ketika di print, akan muncul :
+	[1] male   female female male   male  
+	Levels: female male
+levels adalah distinct value nya
+
+* Data Structur Matrix
+Matrix seperti vector, namun menjadi dua dimensi (baris & kolom). cara membuat data structur matrix menggunakan syntax matrix
+	namavar = matrix(1:12,nrow=3)
+maka ketika di print akan muncul :
+     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12
+
+cara mengakses tipe data ini adalah :
+	namavar[baris,kolom]
+	namavar[2,3] # maka akan muncul angka 8
+
+* Data structur Array
+Data structure array ini bisa lebih dari dua dimensi, menggunakan syntax array :
+	namavar = array(1:24,c(3,4,2))
+
+perintah di atas berarti, dia akan membuat 2 buah matrix, dengan masing masing 3 baris 4 kolom, yang isinya akan di isi angka 1 sampai dengan 24. jika di print maka akan muncul :
+, , 1
+
+     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12
+
+, , 2
+
+     [,1] [,2] [,3] [,4]
+[1,]   13   16   19   22
+[2,]   14   17   20   23
+[3,]   15   18   21   24
+
+
+cara mengaksesnya adalah :
+contoh, kita mau ambil angka 8 di matrix yang pertama :
+	namavar[2,3,1]
+2 = berarti baris ke 2
+3 = berarti kolom ke 3
+1 = berarti matrix yang pertama
+
+* Data Structur Data Frame
+Bentuknya seperti tabel, dimana baris menunjukkan objek, dan kolom menunjukkan atribut. penulisan data frame menggunakan syntax data.frame().
+contoh kasus, kita akan membuat data frame users
+	users = data.frame(
+		name = names, # names adalah sebuah variabel string
+		gender = c("male","male","female","male"),
+		age = c(10,20,30,40)
+	)
+
+- Beberapa operasi pada data frame :
+-- mengakses (field) kolom-kolomnya :
+ #1.
+	users[1] # akan memunculkan isi kolom name
+	users[3] # akan memunculkan isi kolom age
+ #2.
+	users['name'] # akan memunculkan isi kolom name
+	users['age'] # akan memunculkan isi kolom age
+ #3. mengambil isi dua kolom sekaligus
+	users[c('names','gender')]
+
+-- mengakses baris baris nya :
+ #1.
+	users[2,] # akan mengakses baris ke dua
+ #2.
+	users[2:3,] # akan mengakses baris 2 s.d 3
+ #3. mengkases baris barisnya tetapi berdasarkan kolom nya
+	users[2,2] # akan mengakses baris 2, tetapi hanya gender
+ #4.
+	users[2:3,1] # akan mengakses baris 2&3 tetapi hanya nama
+
+dari perintah diatas dapat disimpulkan bahwa, di belakang koma menunjukkan bahwa itu adalah kolom nya jika di belakang koma tidak di isi berarti akan mengakses seluruh kolom.
+tetapi jika diisi (misalnya 2), dia hanya akan mengakses baris dari kolom yang ke dua yaitu gender 
+
+
+* Data Structur List
+list ini seperti vector, bisa berisi kumpulan data, hanya saja type data nya bisa berbeda beda, penulisan data structure list adalah dengan menggunakan syntax list :
+	namavar = list(a,names,users)
+maka,
+list pertama adalah variabel a yg berisi array
+list kedua adalah variabel names yg berisi vector
+list ketiga adalah variabel users yg berisi data frame 
+
+
+
+#6 Data Frame Operations in R Language 1
+* Kita bisa membuat sebuah data frame, kita bisa membuat langsung dengan perintah seperti di atas atau juga bisa dari import CSV
+* cara import csv adalah dengan function read.csv, read.csv ini akan membaca file yang berbentuk csv yang akan diubah menjadi data frame di R. Penulisan function nya adalah
+	namavar = read.csv('namafile.csv')
+1. Operasi yang dapat dilakukan terhadap dataset :
+- kita ingin melihat summary nya :
+	summary(namavar)
+- kita ingin melihat head (beberpa isi dari dataframe) nya :
+	head(namavar)
+ misalnya kita ingin melihat 10 dataset teratas bisa menggunakan syntax :
+	head(namavar,10)
+- Nrow - kita ingin melihat berapa banyak jumlah baris yang ada di dataset ini menggunakan function Nrow :
+	nrow(namavar)
+- Ncol - kita ingin melihat berapa banyak kolom yang ada di dataset ini menggunakan function Ncol :
+	ncol(namavar)
+- write - untuk export kita bisa menggunakan function write :
+	write.csv(namavar,'namafolder/namafile.csv')
+
+2. Operasi data frame di R dengan menggunakan library dplyr
+install : install.package('dplyr') 
+* dplyr adalah suatu library yang biasa digunakan untuk memanipulasi data frame melalui R
+* tidyverse adalah suatu library berisi kumpulan packages di R yang digunakan untuk data frame dan juga operasi lain yang terkait dengan data science
+* cara memanggil library dalam bahasa R adalah :
+	library(namapackage)
+* glimpse() digunakan untuk melihat sekilas seperti apa dataset yg dimiliki :
+	glimpse(namavar)
+1. Function SELECT
+bagaimana cara mengambil beberapa kolom tertentu saja? kita akan menggunakan function select. function select digunakan untuk mengambil beberapa kolom dari data frame. penulisan syntaxnya :
+	select(namavar, list_kolom_yang_mau_diambil)
+
+- contoh kasus kita akan mengambil satu kolom :
+	dataset_result = select(dataset, order_id)
+- contoh kasus kita akan mengambil dua kolom, order_id dan order_date :
+	namavar = select(dataset, c(order_id,order_date))
+- contoh kasus kita akan mengambil semua kolom, kecuali kolom profit :
+	namavar = select(dataset,-c(profit))
+tanda mines di atas berarti kecuali
+
+#7 Data Frame Operations in R Language 2
+1. Function FILTER
+function filter digunakan untuk memfilter data frame berdasarkan kriteria yang diinginkan. penulisan syntax filter :
+	filter(namavar, kondisi)
+	
+- contoh kita ingin mengambil data frame yang isi kolom segment nya customer saja :
+	filter(dataset, segment == 'Consumer')
+
+- misalnya dari contoh kasus di atas, ditambahkan kriteria yaitu yang profitnya positif :
+	filter(dataset, segment == 'Consumer', profit > 0)
+kita bisa juga menggunakan operator &
+	filter(dataset, segment == 'Consumer' & profit > 0)
+
+- contoh kasus kita ingin mengambil data frame yg isi category Furniture ATAU Technology
+	filter(dataset, category == 'Furniture' | category == 'Technology'
+jadi jika sebuah baris memiliki category furniture maka akan dimunculkan, dan jika sebuah baris memiliki category technology maka akan dimunculkan juga
+
+- contoh kasus kita ignin mengambil data frame yang isi segmentnya BUKAN consumer :
+	filter(dataset, segment != 'Consumer')
+
+2. Function MUTATE
+digunakan untuk membuat kolom baru, penulisan function mutate :
+	mutate(namavar, namakolombaru = kondisi)
+* contoh kasus, kita sudah memiliki kolom sales dan quantity. Maka kita akan membuat satu kolom lagi yang namanya average price 
+rumus average price adalah : sales / quantity
+	mutate(dataset, avg_price = sales / quantity)
+
+berbagai operasi aritmatik bisa dilakukan di mutate
+misal, dijumlahkan, dikurang, dikali, dibagi, dll
+
+3. Function TRANSMUTE
+digunakan untuk menghilangkan semua kolom yang ada sebelumnya, lalu memunculkan kolom yang memenuhi kondisi di dalam transmute. 
+	transmute(dataset, avg_price = sales / quantity)
+
+* Yang menarik dari dplyr adalah kita bisa melakukan piping
+piping yaitu melakukan beberapa operasi sekaligus hanya dalam sekali menjalankan source code
+- contohnya saya akan membuat data frame baru yaitu semua data frame yang mengandung segment consumer
+	dataset2 = filter(dataset, segment == 'Consumer')
+- setelah itu saya akan menambahkan sebuah kolom baru yang bernama avg_price dengan rumus sales/quantity
+	dataset2 = mutate(dataset2, avg_price = sales/quantity)
+- selanjutnya akan memunculkan hanya order_id, order_date, sales dan avg_price
+	dataset2 = select(dataset2, c(order_id, order_date, sales, avg_price)) 
+
+jika melakukan seperti di atas agak ribet bukan? kita bisa melakukan operasi PIPING agar menjadi satu baris, efisien dan efektif. PIPING ditandai dengan syntax %>%.
+!!! perlu diketahui, dalam operasi piping nama data frame tidak perlu dituliskan lagi, hanya functionnya saja. Jadi penulisan syntax untuk contoh di atas menggunakan operasi PIPING adalah :
+	dataset3 = dataset %>% filter(segment == 'Consumer') %>% mutate(avg_price = sales/quantity) %>% select(c(order_id, order_date, sales, avg_price))
+
+
+#8 Data Frame Summarization & Combination in R
+
+1. group_by & Summarise
+* digunakan  untuk mengelompok data berdasarkan suatu kolom tertentu
+* group_by berisi kolom mana saja yang ingin dikelompokkan
+* summarise berisi kolom yang akan di summarise berdasarkan group_by
+
+Contoh kasus, kita akan mengelompokkan data ini per segment (Consumer, Corporate, Home Office)
+	dataset %>% group_by(segment) %>% summarise(total_sales = sum(sales))
+
+jika dimunculkan, maka dia akan memunculkan total_sales dari masing masing group_by (consumer,corporate,home office)
+
+- jika ingin menambahkan lagi kolom avg_sales (ratarata dari sales), dan minimum dari quantity
+kita bisa menambahkan syntax mean & min :
+	dataset %>% group_by(segment) %>% summarise(total_sales = sum(sales), avg_sales = mean(sales), min_quantity = min(quantity))	
+
+- kita juga bisa menambahkan kolom untuk menghitung jumlah baris dari setiap kolom dengan menggunakan function n. function n ini tidak memiliki parameter :
+	dataset %>% group_by(segment) %>% summarise(total_sales = sum(sales), max_quantity = max(quantity), n_order = n())
+
+2. Penggabungan dua data frame atau lebih 
+* Jenis penggabungan data frame ada :
+ - Berdasarkan baris
+ - Berdasarkan kolom
+
+# PENGGABUNGAN BERDASARKAN BARIS	
+kita buat data frame pertama dengan berisi kolom dari segment Corporate	
+	data_a = dataset %>% filter(segment=='Corporate') %>% select(c(order_id,order_date,segment,category,sub_category,sales))
+
+kita buat data frame kedua dengan berisi kolom dari category Technology
+	data_b = dataset %>% filter(category=='Technology') %>% select(c(order_id,order_date,segment,category,sub_category,sales))
+
+* beberapa operasi penggabungan dari data frame di atas :
+a. intersect
+intersect digunakan untuk memilih baris-baris yang isinya sama
+antara data_a dan data_b
+	intersect(data_a,data_b)
+maka dia akan memunculkan isi yang sama dari data_a dan data_b
+
+b. setdiff
+setdiff merupakan kebalikan, dari intersect dia akan memunculkan semua baris baris yang isinya TIDAK SAMA.
+	setdiff(data_a,data_b)
+perintah di atas berarti dia akan memunculkan semua data_a yang tidak sama dengan data_b. Jika dibalik :
+	setdiff(data_b,data_a)
+jika dibalik seperti di atas, berarti dia akan memunculkan semua data_b yang tidak sama dengan data_a.
+ 
+
+c. Union
+Union digunakan untuk menggabungkan semua baris, jika ada baris yang sama maka akan dimasukkan satu kali
+	union(data_a,data_b)
+
+
+d. bind_rows
+bind_rows digunakan untuk menggabungkan semua baris data frame
+	bind_rows(data_a,data_b)	
+
+# PENGGABUNGAN BERDASARKAN KOLOM
+kita buat data frame pertama, kita akan mengambil dari dataframe data_a, tetapi kita hanya mengambil beberapa kolom saja (order_id, sub_category, segment, sales)
+	data_c = select(data_a,c(order_id,sub_category,segment,sales))
+
+kita buat data frame kedua, kita akan mengambil data dari dataframe data_b, tetapi kita hanya mengambil beberapa kolom saja (order_id,sub_category,category,order_date)
+	data_d = select(data_b,c(order_id,sub_category,category,order_date))
+
+YANG membuat baris itu sama adalah kolom order_id & sub_category. Jadi kita akan mencoba menggabungkan kolomnya
+
+a. bind_cols()  
+jika untuk baris adalah bind_rows() maka untuk kolom adalah bind_cols(). Menggabungkan kolom antar dataframe adalah dengan menggunakan function bind_cols(). semua kolom kolom di data_d akan tersambung dengan kolom data_c
+untuk menggabungkan kolom, isi data frame (baris) jumlahnya harus sama, jika tidak akan terjadi error
+	bind_cols(data_c,data_d)
+ini tidak cocok, karena mereka order yang berbeda
+b. inner_join() / full_join() / left_join() / right_join()
+  mirip seperti di sql, kita akan menggabungkan dataframe data_c dan data_d tetapi memperhatikan kolom yang sama
+	inner_join(data_c,data_d)
+- kalo full_join(), berarti semua data yang ada di data_c dan data_d akan tersambung termasuk yang tidak ada pasangannya
+	full_join(data_c,data_d)
+- kalo left_join(), berarti semua isi di data_c (kiri) mencoba disambungkan dengan yang ada di data_d (kanan). arahnya ke ---> 
+	left_join(data_c,data_d)
+jadi jika ketemu pasangannya di data_d maka data_d akan ada isinya
+jika tidak ada pasangan, maka akan tertulis NA (kosong)
+
+- kalo right_join(), berarti semua isi di data_d (kiri) mencoba disambungkan dengan yang ada di data_c (kanan). arahnya ke <=----
+	right_join(data_c,data_d)
+jadi jika ketemu pasangannya di data_c maka data_c akan ada isinya
+jika tidak ada pasangan, maka akan tertulis NA (kosong)
+
+
+
+#9 Building Simple Chart in R Language
+* Untuk visualisasi data menggunakan bahasa R menggunakan library Ggplot. 
+	install.packages("ggplot2")
+
+# kita akan membuat chart sederhana menggunakan dua library
+* dplyr untuk operation data frame
+* ggplot2 untuk visualisasi data
+
+1. Visualisasi Scatter Plot
+* Scatter plot bentuknya seperti koordinat dan setiap titik melambangkan setiap data di data frame
+* penulisan syntax dalam bahasa R adalah :
+	ggplot(namavar, aes(berisivariabelygingindimasukkan))
+
+- pertama kita tentukan x dan y nya
+	ggplot(dataset, aes(x = sales, y = profit))
+- lalu kita buat titik titiknya, dengan menambahkan geom_point()
+	ggplot(dataset, aes(x=sales,y=profit)) + geom_point()
+setiap titik melambangkan 1 row
+
+* kita bisa mendesain warna titik dll dengan menambahkan parameter di dalam geom_point() nya :
+- merubah warna, berarti menggunakan parameter colour
+	geom_point(colour = "blue")
+
+2. Visualisasi Histogram
+* histogram digunakan untuk melihat distribusi dari suatu variabel contoh kasus misalnya kita ingin melihat distribusi sales :
+- tentukan x nya
+	ggplot(dataset, aes(x = sales))
+mengapa hanya x saja? karena histogram hanya memerlukan satu variabel, makanya kita masukkan ke sumbu x
+- untuk memunculkan histogram kita hanya menambahkan geom.histogram() :
+	ggplot(dataset, aes(x=sales)) + geom_histogram()
+perlu diketahui!!! bins artinya adalah range nya
+- kita bisa merubah bins maupun binwidth nya dengan menambahkan parameter bins / binwidth :
+	geom.histogram(bins = 10, binwidth=30)
+
+
+3. Visualisasi Bar Chart
+contoh kasus saya ingin kita ingin memunculkan total size untuk masing masing segment
+- tentukan x dan y nya 
+	ggplot(dataset, aes(x=segment,y=sales))
+- untuk memunculkan bar chart kita bisa menambahkan perintah geom_bar() :
+	ggplot(dataset, aes(x=segment,y=sales) + geom_bar()
+- kita bisa menambahkan parameter stat yang berisi identity
+	geom_bar(stat="identity")
+- kita bisa merubah warna misal kita ganti menjadi merah, berarti kita menambahkan dengan parameter fill yang berisi red :
+	geom_bar(stat="identity", fill = "red")
+- kita bisa mengubah ketebalan dari bar bar yang dimunculkan dengan menggunakan parameter width :
+	geom_bar(stat="identity", fill="red", width="0.5")
+- kita bisa membagi masing masing bar dengan variabel lain, dengan menggunakan parameter aes diisi dengan fill=namavariabel :
+	geom_bar(stat="identity", width="0.5", aes(fill=category))
+
+
+4. Visualisasi Pie Chart
+* misalnya dengan cara yang sama kita ingin melihat total sales / segment, hanya saja bentuknya pie chart.
+* UNTUK PIE CHART BIASANYA KITA MEMBUAT DATA FRAME BARU TERLEBIH DAHULU UNTUK SUMMARISE NYA!!!!!!
+- kita buat data frame terlebih dahulu, yang isinya summarise dan kita group by berdasarkan segmentnya
+	sales_per_segment = dataset %>% group_by(segment) %>% summarise(total_sales = sum(sales))
+- lalu kita buat pie chart berdasarkan data frame di atas. :
+- kita terlebih dahulu perlu buat bar chart dair data frame di atas
+	ggplot(sales_per_segment, aes(x="", y=sales, fill = segment)) + geom_bar(stat="identity", width=1)
+jadi sumbu y nya adalah sales nya untuk menunjukkan berapa sales untuk masing masing segment, dan tiap segment akan berbeda warnya nya dengan menggunakan parameter fill di dalam ggplot
+
+- lalu dari bar chart yang telah muncul, kita akan membuat dia menjadi pie chart (melingkar). untuk membuatnya menjadi melingkar, kita tambahkan function coord_polard lalu diisi dengan variabel y, dan mulai dari 0 (start=0) :
+	ggplot(sales_per_segment, aes(x="", y=sales, fill=segment)) + geom_bar(stat="identity, width=1) + coord_polard("y", start=0)
+
+5. Visualisasi Line Chart
+- berbeda dengan bar chart (yang biasa sumbu x nya berupa variabel yang categorical seperti segment atau category) maka di line chart biasanya sumbu x berupa variabel ordinal
+contoh kasus kita akan menggunakan sumbu x berdasarkan waktu (date). yang waktu nya dihitung berdasarkan per bulan (yang artinya masing masing dari kolom order_date akan masuk ke bulan berapa)
+
+
+- jadi yang pertama tama kita akan membuat kolom baru untuk dataset yang berisi per bulan (karena di dataset tidak ada kolom berdasarkan perbulan, yang ada hanya order_date)
+- sebelum itu kita pastikan bahwa kolom order_date merupakan settingan tanggal
+	dataset$order_date = as.Date(dataset$order_date)
+- lalu habis itu kita membuat kolom baru bernama order_month lalu kita memotong menggunakan function cut, lalu kita tentukan mau berdasarkan apa menggunakan parameter breaks, pastikan function function itu berada di dalam as.Date yang berarti kita mengkonversi kolom menjadi settingan tanggal
+	dataset$order_month = as.Date(cut(dataset$order_date, breaks='month'))
+
+- Selanjutnya kita akan membuat line chart, ada 2 pendekatan.
+#yang pertama kita akan menggunakan stat summary
+stat_summary memerlukan parameter fun.y (function y) lalu diisi dengan function apa (contoh disini adalah sum) dan masukkan juga parameter geom untuk jenis chartnya (disini kita menggunakan model line chart) 
+kita akan melihat total sales di masing masing bulan
+	ggplot(dataset, aes(x=order_month, y=sales)) + stat_summary(fun.y = sum, geom='line')
+
+#yang kedua kita akan menggunakan geom line
+- kelebihan menggunakan geom line adalah kisah bisa menambahkan geom point (titik)
+- kalo menggunakan geom line kita perlu membuat data frame baru yang berisi summary (jumlah sales) dari masing masing bulan
+	monthly_sales = dataset %>% group_by(order_month) %>% summarise(total_sales = sum(sales))
+- selanjutnya kita hanya tinggal membuat line chart nya dengan menggunakan ggplot
+	ggplot(monthly_sales, aes(x=order_month, y=total_sales)) + geom_line() + geom_point(colour='red')
+
+
+#10 Building Advanced Chart in R Language
+1. Visualiasasi SCATTER PLOT
+* SUMBU X = sale ; SUMBU Y = profit
+* syntax nya adalah
+	ggplot(dataset, aes(x=sales,y=profit)) + geom_point()
+* menambahkan untuk menunjukkan regressi nya menggunakan function geom_smooth()
+	ggplot(dataset, aes(x=sales,y=profit)) + geom_point() + geom_smooth()
+
+* jika kita ingin menunjukkan linear regressinya dengan mengisi parameter di dalam geom_smooth() yaitu parameter method yang berisi lm
+	ggplot(dataset,aes(x=sales,y=profit)) + geom_point() + geom_smooth(method = 'lm')
+* jika kita ingin menambahkan judul (title) menambahkan function labs() yang didalamnya ada parameter title yang berisi judul yg diinginkan 
+	ggplot(dataset,aes(x=sales,y=profit)) + geom_point() + geom_smooth(method = 'lm') + labs(title = 'Scatterplot SALES VS PROFIT')
+jika kita ingin menambahkan sub judul tinggal menambahkan parameter subtitle di dalam function labs()
+	ggplot(dataset,aes(x=sales,y=profit)) + geom_point() + geom_smooth(method = 'lm') + labs(title='Scatetrplot SALES VS PROFIT, subtitle='subjudulnya')
+
+* Untuk mengganti nama di sumbu x (contoh: sales) atau sumbu y (profit) bisa menggunakan function xlab untuk sumbu x. dan function ylab untuk sumbu y
+	ggplot(dataset,aes(x=sales,y=profit)) + geom_point() + geom_smooth(method="lm") + labs(title="Scaterplot Sales VS Profit", subtitle="subjudulnya", caption="ini captionnya") + xlab("Order Sales") + ylab("Order Profit")
+
+* jika ingin merubah limit / range nya kita bisa menambahkan function xlim() / ylim() karena bentuknya suatu vektor maka di dalamnya berisi start dari 0 dan berakhir dimana 
+	ggplot(dataset,aes(x=sales,y=profit)) + geom_point() + geom_smooth(method="lm") + labs(title="Scaterplot Sales VS Profit", subtitle="ini subjudulnya", caption="ini captipnnya") + xlab("Order Sales") + ylab("Order Profit") + xlim(c(0,7500)) + ylim(c(-2500,2500))
+
+* Jika ingin mengubah warna yang lebih bervariasi (rgb) maka bisa menggunakan aplikasi colour picker, copy code nya lalu masukkan ke parameter colour
+	geom_point(colour="#3492eb")
+* Jika ingin mengubah warna titik untuk setiap category bisa menggunakan syntax aes di dalam function yang ingin diganti warna, lalu di dalamnya diisi dengan parameter colour yang berisi category
+	geom_point(aes(color=category))
+* jika kita ingin merubah ukuran titiknya dengan menambahkan parameter size yang berisi ukurannya
+	geom_point(aes(color=category),size=5)
+* mengganti garis regresi menjadi putus putus bisa menambahkan parameter linetype di dalam function geom_smooth() dengan berisi dashed
+	geom_smooth(method="lm", color="#3492eb", linetype="dashed")
+jika ingin mengganti garis regresi menjadi titik titik bisa mengganti nilai dashed menjadi dotted
+longdash = garis putus putus tetapi agak panjang
+dotdash = garis titik garis titik
+
+* mengganti bentuk titik menjadi bentuk lain bisa menggunakan parameter shape yang berisi kode bentuknya
+	geom_point(shape=2)
+
+* mengganti warna judul bisa menggunakan function theme yang memiliki parameter plot.title yang berisi syntax element_text
+	geom_point(shape=2) + theme(plot.title = element_text(color="blue", size=15, face='bold))
+
+* Cara menyimpan chart adalah dengan menggunakan function ggsave() yang berisi nama file nya dan nama variabel yg ingin disave
+	ggsave("namafile.png",namavariabel)
+  
+  
+  
+  C. INTRODUCTION TO PYTHON LANGUAGE
+#3. BASIC FUNCTION AND DATA TYPE IN PYTHON
+A. TYPE DATA PYTHON
+* Variabel = adalah tempat menyimpan data atau nilai di python
+* Type Data Float = type data yang berisi angka tetapi koma
+* Type Data Boolean = type data yang hanya berisi dua, Trua & False
+* Type Data String = type data yang berisi teks
+* Type Data None = type data spesial yang artinya type data ini tidka memiliki type data 
+
+B. Function dan Method di Python
+- Function yang digunakan untuk number
+* Function min = digunakan untuk mengambil nilai minimum
+	min(-1,0,1,2)
+* Function max = digunakan untuk mengambil nilai maksimum
+	max(-1,0,1,2)
+* Function sum = digunakan untuk menjumlah bilangan bilangan
+	sum([-1,0,1,2])
+* Function absolut = digunakan untuk mengubah nilai negatif menjadi positif
+	abs(-1)
+* Function pembulatan = digunakan untuk membulatkan sebuah angka
+	round(-3.1)
+	round(-3.5)
+
+- Function digunakan untuk string
+text = "Saya ingin menjadi seorang data scientist"
+* text.lower()
+kita bisa mengubah seluruh karakternya menjadi huruf kecil
+* text.upper()
+kita bisa mengubah seluruh karakternya menjadi huruf besar
+* text.strip()
+misalnya kita ingin menghilangkan spasi yang di depan dan belakang  sebuah kalimat / string contohnya
+"      Saya     Ingin     Menjadi    Seorang  Data   Scientist   "
+* text.split()
+Memecah string menjadi kata per kata
+* "_".join(text.split())
+Menggabungkan kembali menjadi satu buah string dengan garis bawah
+* text.replace('a','i')
+Mengubah karakter yang ada di kalimat / string menjadi karakter lain
+* type(umur)
+Function type digunakan untuk mengetahui type data suatu variabel
+
+
+#5. Data Frame Introduction in Python
+* sebelum ke data frame, kita perlu mengetahui struktur data di python
+* perhitungan sebuah struktur data di mulai dari angka 0, contoh :
+	|5|10|15|20|25|30|
+	| |  |  |  |  |  |
+	0 1  2  3  4  5  6
+
+- Struktur data List, ditandai dengan penulisan kurung siku variabel = [1,2,3]
+beberapa fungsi di python yang melakukan operasi pada list :
+len, untuk mengetahui banyaknya anggota dalam list tersebut :
+	print(len(namavariabellist))
+append, menambahkan anggota baru ke dalam list :
+	namavariabellist.append(angka)
+memecah list menjadi bagian bagian kecil, caranya adalah dengan memberi index (urutan) yang ingin diambil dari list, contoh :
+	numbers = [5,10,15,20]
+	numbers2 = numbers[1:3]
+perhitungan dari angka 0, yang berarti data yg diambil adalah 10 sampai 15
+	|5|10|15|20|
+	| |  |  |  |
+	0 1  2  3  4
+- Struktur Data Dictionary, ada 2 elemen dalam dictionary, yaitu keys dan values,
+dictionary ditandai dengan kurung kerawal, contoh :
+	namavariabel = {keys:values,keys:values,...}
+beberapa fungsi di python yang melakukan operasi pada dictionary :
+memunculkan seluruh keys dari suatu dictionary :
+	namavariabel.keys()
+memunculkan seluruh values dari suatu dictionary :
+	namavariabel.values()
+memunculkan keseluruhan keys dan values ada 2 cara :
+1. 	print(namavariabeldictionary)
+2.	print(namavariabeldictionary.items())
+
+Sekarang kita sudah siap untuk menuju data frame
+* Data Frame menggunakan library pandas
+beberapa fungsi di python yang melakukan operasi pada data frame :
+- mengetahui dimensinya, yaitu berapa banyak rows & columns
+	namavariabeldataframe.shape
+- mengetahui deskripsi dari data frame kita :
+	namavariabeldataframe.describe()
+  mengetahui deskripsi secara spesifik (per kolom) :
+	namavariabeldataframe.namakolom.describe()
+- kita bisa membuat sebuah kolom baru, dengan cara :
+	namavardataframe['new_column'] = 'new value'
+- kita bisa menurunkan / menaikkan value dalam data frame :
+  contoh kasus saya ingin membuat kolom baru :
+	df["play-1"] = df['play'].shift(-1)
+- di beberapa kasus, kita tidak perlu tau keseluruhan isi data frame, kita hanya perlu mengetahui beberapa saja. ada beberapa method yang bisa digunakan untuk memunculkan beberapa saja data frame
+1. method head, digunakan untuk mengambil beberapa row pertama :
+	namavardataframe.head()
+   kita juga bisa mengisi argumen yang ada di dalam (), misal kita isi 8 maka dia akan memunculkan 8 row pertama
+	namavardataframe.head(8)
+2. method tail, digunakan untuk mengambil beberapa row terakhir :
+	namavardataframe.tail()
+  sama halnya dengan head, kita bisa memasukkan argumen di dalam (), misal kita isi 7, maka dia akan memunculkan 7 row terakhir\
+	namavardataframe.tail(7)
+3. method sample, digunakan untuk mengambil row secara acak (random)
+
+- mengambil hanya data frame yang berada di dua kolom / lebih yang saya ingin, contoh kasus saya ingin mengambil sampel di kolom outlook dan humidity :
+	df[['outlook','humidity']]
+- mengambil data frame yang hanya ada di satu (1) kolom
+	df.namakolom
+- kita bisa juga menambahkan sebuah peirntah method di akhir kolom, misalnya saya ingin tahu unique value dari kolom outlook :
+	df.outlook.unique()
+
+
+#6 DATA FRAME OPERATION IN PYTHON
+* Cara import dan export file CSV menggunakan Python
+	namavardataframe = pd.read_csv("direktorinya/.file.csv")
+* Melihat type type data nya menggunakan syntax dtypes :
+	namavardataframe.dtypes
+* Cara mengganti type data dari suatu kolom menggunakan perintah :
+	df = pd.read_csv("csv/transactions.csv", parse_dates=["date"])
+parse_date adalah sebuah parameter yang menunjukkan sebuah type data dari kolom / field
+* cara membuat data frame menggunakan pandas
+ cara pertama adalah dengan membuat type data list, contoh kasus, saya membuat 2 buah type data list :
+order_ids = ['CA-2020-001','CA-2020-002','CA-2020-003']
+couriers = ['Courier A','Courier B', None]
+
+lalu cara membuatnya adalah dengan menggunakan syntax dari pandas yaitu DataFrame
+	data_courier = pd.DataFrame({\
+		"order_id":order_ids,
+		"courier":couriers,
+	})
+- order_id & courier -> berarti itu adalah nama kolom / field yang diinginkan nanti dalam csv
+- order_ids & couriers -> berarti itu adalah nama variabel list yang ingin dimasukkan ke dalam csv
+
+* cara mengecek apakah ada missing value / tidak ada isinya menggunakan syntax isna
+	data_courier.isna()
+nanti akan ditunjukkan dalam True & False, jika True berarti benar, values tidak ada nilainya
+- cara untuk mengetahui row mana yang tidak memiliki nilai, walaupun row tersebut hanya satu saja yg tidak memiliki nilai. caranya adalah dengan menambahkan perintah any. contoh kasus :
+	data_courier.isna().any("columns")
+
+* Cara mengeksport data dari python ke dalam CSV
+	data_courier.to_csv("namadirektori/namafile.csv")
+
+ADA DUA CARA MENGGABUNGKAN DATA FRAME, YAITU CONCAT DAN
+1. CONCAT = MENGGABUNGKAN DATA FRAME ATAS KE BAWAH
+2. MERGE = MENGGABUNGKAN DATA FRAME KIRI KE KANAN, ini seperti SQL yaitu
+- Left Join
+- Right Join
+- Inner Join
+- Outer Join
+
+1. Concat 2 buah data frame di python, concat berarti menggabungkan dari atas ke bawah, cara concat di python adalah dengan perintah :
+	namavarconcat = pd.concat([namadata1,namadata2])
+  namun, ketika dilakukan perintah di atas, index nya masih memakai index yang lama sebelum digabung, untuk meresetnya agar terurut kembali kita bisa menggunakan parameter ignore_index diberi nilai true
+	namavar = pd.concat([namadata1,namadata2], ignore_index=True)
+
+* Cara Sort (urutkan) Value misalnya berdasarkan order date
+	namavardataframe.sort_values("order_date")
+  Sebaliknya, jika kita ingin men-sort berdasarkan huruf akhir s./d huruf awal / order date terlama s.d order date terbaru menambahkan parameter ascending=False, contoh perintah :
+	namavardataframe.sort_values("nama_kolom", ascending=False)
+
+* Setelah melakukan perubahan, lalu kita menyimpan perubahan dengan cara kita masukan perintah perubahan tersebut ke dalam variabel yang sama yang ingin kita rubah
+	namavar = namavardataframe.sort_values("nama_kolom", ascending=False)
+
+2. Merge - Cara menggabungkan 2 buah data frame dari kiri ke kanan, ini seperti SQL yaitu
+- Left Join
+- Right Join
+- Inner Join
+- Outer Join
+
+* Method iloc digunakan untuk mengambil dataframe dari index berapa ke berapa, contoh saya ingin mengambil dataframe dari index ke 2 s.d 7
+	namavarbaru = namavar.iloc[2:7]
+* Cara merge di python adalah dengan menggunakan syntax merge
+	namavarbaru = pandas.merge(dataframekiri,dataframekanan, how="left", on="order_id")
+how : adalah sebuah parameter left join
+on : adalah apa yang dijadikan patokan dalam penggabungan ini
+misalnya patokan antara data frame 1 dan data frame 2 berbeda dtypesnya, maka harus disamakan terlebih dahulu dengan perintah astype, syntaxnya adalah :
+	namavar['dtypeskolomygingindiganti'] = namavar.dtyoeskolomygingindiganti.astype(namadtypesnya)
+
+contohnya saya ingin mengubah dtypes dari kolom transaction_id dalam dataframe data_courier :
+	data_courier['transaction_id'] = data_courier.transaction_id.astype(int)
+
+* Menghilangkan kolom yang ingin dihilangkan dengan syntax drop. contoh perintahnya adalah :
+	namavar.drop(columns=["user_id","quantity"])
+
+* Cara Group BY di python pada Data Frame, syntaxnya adalah groupby
+ contoh kasus, saya ingin melihat pendapatan (amount) dari masing masing tipe produk (product_type)
+	namavarbaru = namavar.groupby(['product_type']).agg({
+  		"amount" : "sum",
+	})
+- Tutorial Group BY, contoh kasus, misalnya kita ingin melihat pendapatan berdasarkan type produk dan dalam perhari
+	namavarbaru = namavar.groupby(['date','product_type']).agg	({
+  		"amount" : "sum",
+	})
+- bagaimana merubah perhari menjadi perbulan
+	df["order_month"] = df.date.dt.strftime("%Y-%m")
+order_month adalah field baru untuk menampung hasil konversi harian menjadi bulanan
+date menandakan bahwa yang ingin kita konversi harian menjadi bulan itu kolom (field) date
+dt adalah date time
+strftime adalah sebuah method dari dt
+%Y & %m adalah sebuah format waktu
+
+lalu setelah selesai menkonversi harian menjadi bulan lalu kita group by,
+karena kita ingin memunculkan amount berdasarkan product_type dan orderan dalam kurun waktu perbulan, maka perintah group BY nya :
+df_groupby3 = df.groupby(['order_month','product_type']).agg({
+    "amount" : "sum",
+})
+
+* Ketika suatu data frame di group BY akan menjadi sebuah index, bagaimana cara mengembalikannya menjadi sebuah kolom? caranya adalah dengan menggunakan method reset_index()
+
+* Cara Rename Kolom (field) dengan menggunakan method rename, contoh kasus saya ingin merubah field order_month menjadi month
+	namavar.rename(columns={
+		"order_month" : "month"
+	})
+
+* Merubah product_type menjadi kolom (field) menggunakan method pivot
+	print(df_groupby3.pivot(index="month",columns="product_type",values="amount"))
+
+
+#7 BUILDING ADVANCED CHART IN PYTHON 1
+* Membuat chart ini menggunakan library plotly di python
+* Sebelum visualisasi, kita perlu baca dataset sebelum melanjutkan ke visualisasi dengan perintah :
+	namavar = pd.read_csv("namafolder/namafile.csv")
+* Setelah itu, kita siap untuk membuat visualisasi, pertama kita akan membahas tentang cara membuat scatter plot dan pie chart
+1. scatter plot bisa menggunakan syntax go.Scatter()
+- contoh kasus saya ingin membuat scatter plot dengan nilai
+x adalah sales, dan y adalah profit :
+	data = go.Scatter(
+		x=df.sales,
+		y=df.profit,
+		mode='markers',
+		name='Sales VS Profit'
+	)
+mode dan name merupakan sebuah parameter,
+
+- setiap kita membuat chart, kita perlu membuat sebuah objek figur dengan syntax fig = go.Figure(data=data)
+
+- munculkan chart dengan cara :
+	kalo di jupyter : iplot(fig) 
+	kalo di pycharm : plot(fig)
+
+- mengganti warna dari chartnya satu persatu
+kita akan mengganti warna setiap row nya dengan menggunakan library numpy 
+untuk mengganti warna, pertama tama kita beri label baru di setiap row nya
+	df["marker_color"] = np.where(
+		df.profit >= 0,
+		"green",
+		"red"
+	)
+setelah itu kita akan menambahkan perintah marker pada variabel go.Scatter, perintahnya adalah :
+	marker = {
+        	"color": df.marker_color,
+    	},
+
+
+2. pie chart menggunakan syntax go.pie(), 
+- contoh kasusnya sama seperti di atas
+	data = go.pie(labels=df.segment, values=df.sales)
+labels adalah sebuah parameter
+values adalah sebuah parameter
+- setelah itu kita perlu membuat objek figure di setiap setelah membuat chart, syntax untuk membuat objek figur adalah go.Figure()
+	fig2 = go.Figure(data=data)
+- lalu tampilkan dengan cara :
+di pycharm menggunakan library plotly.offline dengan nama method plot :
+	plot(fig2)
+di jupyter menggunakan library plotly.offline dengan nama method iplot :
+	iplot(fig2)
+
+* Cara Membuat histogram dan bar chart
+1. Kita akan membuat histogram
+kita bisa menggunakan syntax go.histogram(),
+contoh kasus saya ingin mengambil field sales sebagai datanya
+	data = go.Histogram(x=df.sales)
+lalu kita buat objek figur nya :
+	fig = go.Figure(data=data)
+lalu kita munculkan histogramnya :
+	plot(fig)
+
+- kita juga bisa mengubah min width dari histogram dengan menambahkan parameter xbins={ "size":500,}, jadi jika di tambahkan dalam go.Histogram menjadi :
+	data = go.Histogram(
+			x=df.sales,
+			xbins={
+				"size":500,
+				}
+			)
+2. Kita akan membuat Bar Chart, 
+dalam membuat bar chart, kita bisa menggunakan syntax go.Bar()
+- Contoh kasus: kita akan menggunakan data agregat per sekmen.
+sekmen contohnya adalah customer, corporate, Home office 
+pertama kita akan membuat data sales berdasarkan segment nya, perintahnya adalah :
+	df_segment = df.groupby("segment").agg({"sales":"sum"})
+- setiap kita membuat data frame menggunakan cara menggabungkan dari beberapa kolom / table, kita perlu mereset index
+	df_segment = df_segment.reset_index()
+- kita membuat bar chart dengan syntax go.Bar(), perintahnya:
+	data = go.Bar(x=df_segment.segment, y=df_segment.sales)
+- jangan lupa, setiap kita menggunakan syntax untuk membuat chart, kita perlu membuat objek figur nya, caranya :
+	fig = go.Figure(data=data)
+* Bar Chart ini memiliki 2 type :
+1. Group Bar Chart
+2. Stack Bar Chart
+kita coba untuk membuat kedua type tersebut :
+1. Group Bar Chart
+- kita coba buat data frame baru yaitu agregat dari kolom segment dan kategori
+	df_segment_category = df.groupby(["segment","category"]).agg({"sales":sum})
+- lalu kita reset index
+	df_segment_category = df_segment_category.reset_index()
+- Cara membuat Group Bar Chart, sama seperti membuat Bar Chart biasa, hanya saja dibuat 1 variabel / 1 bar
+
+
+#8 BUILDING ADVANCED CHART IN PYTHON 2
+1. Cara Membuat Line Chart
+dalam membuat line chart, kita bisa menggunakan syntax go.Scatter()
+- Mari kita buat data frame terlebih dahulu
+contoh kasus, kita akan membuat data frame sales per bulannya
+
+Karena di data yang kita punya tidak ada kolom month, maka kita perlu membuatnya dulu
+Cara membuat Isi Kolom Month adalah dengan syntax :
+	df["month"] = df.order_date.dt.strftime("%Y-%m-1")
+
+Selanjutnya kita akan group by month dengan sales 
+	df_monthly_sales = df.groupby("month").agg({"sales":"sum"})
+
+Lalu Seperti biasa, kita mereset index nya
+	df_monthly_sales = df_monthly_sales.reset_index()
+
+- Setelah Data Frame siap, mari kita membuat Line Chart,
+Line chart menggunakan syntax go.Scatter(), penulisannya :
+	data7 = go.Scatter(
+		x=df_monthly_sales.month,
+		y=df_monthly_sales.sales,
+	)
+
+Lalu setelah itu kita buat objek figur
+	fig7 = go.Figure(data=data7)
+
+* Cara Menampilkan titik poin data di Line Chart, kita bisa menggunakan parameter mode dan diisi dengan "lines+marker". menaruhnya di dalam go.Scatter(). Jadi jika dicontohkan :
+	data7 = go.Scatter(
+		x=df_monthly_sales.month,
+		y=df_monthly_sales.sales,
+		mode="lines+markers",
+	)
+
+2. Cara Membuat Line Chart yang ada Banyak
+- Sebelum itu mari kita buat data frame nya,
+contoh kasus saya ingin menampilkan sales per bulan di setiap kategori. maka agg nya adalah sales, dan group nya adalah month dan category :
+	df_monthly_sales_cat = df.groupby(["month","category"]).agg({"sales":"sum"})
+
+setelah itu kita reset indexnya :
+	df_monthly_sales_cat = df_monthly_sales_cat.reset_index()
+- Gunakan pivot untuk memindahkan category menjadi sebuah kolom
+	df_monthly_sales_cat = df_monthly_sales_cat.pivot(
+		index="month",
+		columns="category",
+		values="sales",
+	)
+- Selanjutkan kita akan membuat Line Chart yang ada banyak menggunakan syntax go.Scatter(), tetapi kita buat,nya per kategori (karena kategori telah menjadi kolom)
+sekedar informasi, berhubung month sudah menjadi index maka df_monthly_sales_cat.month bisa diganti menjadi df_monthly_sales_cat.index agar lebih dinamis
+
+	#ini untuk Furniture
+	line1 = go.Scatter(
+		x=df_monthly_sales_cat.index,
+		y=df_monthly_sales_cat["Furniture"],
+		mode="lines+markers"
+		name="Furniture"
+	)
+
+	#ini untuk Office Supplies
+	line2 = go.Scatter(
+		x=df_monthly_sales_cat.index,
+		y=df_monthly_sales_cat["Office Supplies"],
+		mode="lines+markers"
+		name="Office Supplies"
+	)
+	
+	#ini untuk Technology
+	line3 = go.Scatter(
+		x=df_monthly_sales_cat.index,
+		y=df_monthly_sales_cat["Technology"],
+		mode="lines+markers"
+		name="Technology"
+	)
+Setelah sudah di buat semua, kita buat variabel data isinya ketiga category tersebut
+	data8 = [line1,line2,line3]
+karena telah membuat chart baru, maka selanjutnya kita buat objek figure
+	fig8 = go.Figure(data=data8)
+	plot(fig8)
+
+* pada chart, symbol nya secara default bulat semua, cara mengubah symbol nya adalah dengan menambahkan parameter marker dengan isinya adalah {"symbol":"diamond"}, menambahkannya di dalam syntax go.Scatter(), contohnya adalah :
+	line1 = go.Scatter(
+		x=df_monthly_sales_cat.index,
+		y=df_monthly_sales_cat["Furniture"],
+		mode="lines+markers",
+		marker={"symbol":"diamond"}
+		name="Furniture"
+	)
+
+#9 BUILDING ADVANCED CHART IN PYTHON
+1. Membuat Trend Line
+Cara membuat Trend Line adalah dengan menggunakan library scipy
+- Kita Import data csv terlebih dahulu
+	namavar = pd.read_csv("namadir/namafile.csv", parse_dates=["order_date"])
+- Lalu kita buat Chart nya
+	data = go.Scatter(
+			x=csv.sales,
+			y=csv.profit,
+			mode="markers",
+		)
+- Lalu kita buat objek figur nya
+	figure = go.Figure(data=data)
+
+- setelah itu, kita import scipy
+	from scipy import stats
+- selanjutnya, kita bisa menggunakan snytax seperti ini :
+	slope, intercept, r_value, p_value, std_err = stats.linregress(x=df.sales, y=df.profit)
+lines = slope * csv.sales.values + intercept
+- lalu, kita buat masing masing data dan lines nya, yang nanti akan digabungkan membentuk line trends chart
+	dot = go.Scatter(
+		x=csv.sales,
+		y=csv.profit,
+		mode="markers"
+	)
+	line = go.Scatter(
+		x= csv.sales,
+		y=lines,
+		name="Linear Trend Line"
+	)
+- lalu kita gabungkan
+	data_trend_line = [dot,line]
+- kita buat objek figur nya
+	fig_tl = go.Figure(data=data_trend_line)
+
+* Cara menambahkan Title dan Axis ke dalam Chart
+1. Membuat Title
+Untuk Title, kita tambahkan dulu sebuah variabel, lalu tambahkan parameter {"title": "nama titlenya"}, untuk contoh :
+	inilayout = {"title":"Sales VS Profit"}
+atau bisa dengan menambahkan style dengan cara :
+	inilayout = {"title":{
+				"text":"Sales VS Provit",
+				"x" : 0,5
+				}
+	}
+dari perintah di atas, penjelasannya adlaah x merupakan parameter yang menentukan posisi dari title tersebut, x terdiri dari 0 dan 1
+sedangkan text adalah parameter yang diisi dengan nama title tersebut.
+
+- setelah itu kita bisa panggil title tersebut dengan cara tambahkan parameter layout di dalam objek figur nya. contohnya :
+	fig = go.Figure(data=data, layout=inilayout)
+
+2. Cara menambahkan Axis di Chart
+penulisan parameter untuk axis adalah 
+xaxis untuk axis x,
+yaxis untuk axis y,
+
+ada beberapa fitur axis :
+* Cara menambahkan Label di Axis
+untuk axis, kita bisa menggunakan parameter 
+xaxis untuk axis x,
+yaxis untuk axis y,
+penempatannya sama seperti title, yaitu di dalam variabel, lalu variabel tersebut dipanggil ke dalam objek figur.
+contoh penulisan kode untuk label axis adalah :
+	inilayout = {
+		"title":{
+			"text":"Sales VS Profit"
+			"x":"0.5"
+			},
+		"xaxis":{"title":"Sales",},
+		"yaxis":{"title":"Profit",},
+	}
+
+* Cara Membatasi nilai di axis 
+membatasi nilai bisa menggunakan parameter range
+	"range":[isiangkaawal,isiangkaakhir]
+penempatannya sama seperti label pada axis, yaitu di dalam xaxis atau yaxis,
+contoh penulisan kode untuk membatasi nilai
+	inilayout = {
+		"title":{
+			"text":"Sales VS Profit"
+			"x":"0.5"
+			},
+		"xaxis":{
+			"title":"Sales",
+			"range":[0,7500],
+			},
+		"yaxis":{
+			"title":"Profit",
+			"range":[-2500,2500],
+			},
+	}
+
+
+* Cara Modifikasi Warna dan ukuran dari Komponen-komponen di Dalam Chart
+contoh kasus, saya akan buat data frame baru berisi
+
